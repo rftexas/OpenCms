@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCms.Api", "OpenCms.Api\OpenCms.Api.csproj", "{2037F50A-2910-4266-8BF3-0E93392C8303}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCms.Core", "OpenCms.Core\OpenCms.Core.csproj", "{EC52A619-9407-4A72-A375-71C4E84C3086}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCms.Domain", "OpenCms.Domain\OpenCms.Domain.csproj", "{D90EB703-B5D8-42D2-838F-F57EFD5093A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCms.Persistence", "OpenCms.Persistence\OpenCms.Persistence.csproj", "{23657775-1EFB-41E5-81DC-D65D356C83FB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2037F50A-2910-4266-8BF3-0E93392C8303}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2037F50A-2910-4266-8BF3-0E93392C8303}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2037F50A-2910-4266-8BF3-0E93392C8303}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2037F50A-2910-4266-8BF3-0E93392C8303}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC52A619-9407-4A72-A375-71C4E84C3086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC52A619-9407-4A72-A375-71C4E84C3086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC52A619-9407-4A72-A375-71C4E84C3086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC52A619-9407-4A72-A375-71C4E84C3086}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D90EB703-B5D8-42D2-838F-F57EFD5093A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D90EB703-B5D8-42D2-838F-F57EFD5093A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D90EB703-B5D8-42D2-838F-F57EFD5093A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D90EB703-B5D8-42D2-838F-F57EFD5093A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23657775-1EFB-41E5-81DC-D65D356C83FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23657775-1EFB-41E5-81DC-D65D356C83FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23657775-1EFB-41E5-81DC-D65D356C83FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23657775-1EFB-41E5-81DC-D65D356C83FB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
