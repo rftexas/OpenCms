@@ -1,0 +1,830 @@
+{
+  "configuration" : { },
+  "description" : "Description",
+  "documentation" : {
+    "decisions" : [ {
+      "content" : "# Architectural Decision Record: Use PostgreSQL as the Database\n\n## Status\n\nAccepted\n\n## Context\n\nThe Case Management System (CMS) requires a reliable, open-source, and feature-rich relational database to store structured data such as cases, users, organizations, and configuration. The database must support:\n\n- ACID transactions\n- Strong consistency\n- Flexible schema evolution\n- Integration with popular tools (e.g., Liquibase, Keycloak)\n- Containerized deployment for local development and production\n\n## Decision\n\nWe will use **PostgreSQL** as the primary database for the CMS.\n\n## Consequences\n\n- Enables use of advanced SQL features, JSONB, and full-text search.\n- Supported by major ORMs and migration tools (e.g., Liquibase).\n- Easily runs in containers (Docker) for local and cloud environments.\n- Well-supported by Keycloak for authentication and authorization.\n- Requires operational knowledge of PostgreSQL for backup, scaling, and tuning.\n\n## Alternatives Considered\n\n- **MySQL/MariaDB**: Also open-source and widely used, but PostgreSQL offers richer features and better standards compliance.\n- **SQL Server**: Commercial licensing and Windows-centric ecosystem.\n- **NoSQL (MongoDB, etc.)**: Not chosen due to strong relational requirements and transactional needs.\n\n## Related Decisions\n\n- [ADR-0002: Use Liquibase for Database Migrations](./#2)\n\n## References\n\n- [PostgreSQL Documentation](https://www.postgresql.org/docs/)\n- [Docker Official Postgres Image](https://hub.docker.com/_/postgres)",
+      "date" : "2025-07-11T01:12:23Z",
+      "format" : "Markdown",
+      "id" : "1",
+      "status" : "Accepted",
+      "title" : " Architectural Decision Record: Use PostgreSQL as the Database"
+    }, {
+      "content" : "# Architectural Decision Record: Use React Bootstrap for Styling\n\n## Status\n\nAccepted\n\n## Context\n\nThe Case Management System (CMS) frontend is built with React and TypeScript. The team requires a modern, consistent, and responsive UI framework that integrates well with React, supports rapid development, and is easy to maintain. Several options were considered, including Material UI, Chakra UI, Ant Design, and React Bootstrap.\n\n## Decision\n\nWe will use **React Bootstrap** as the primary styling and component library for the CMS frontend.\n\n## Consequences\n\n- Provides a large set of accessible, responsive, and well-documented components.\n- Integrates seamlessly with React and supports TypeScript typings.\n- Leverages Bootstrap's familiar grid and utility classes, reducing the learning curve for developers with Bootstrap experience.\n- Enables rapid prototyping and consistent UI/UX across the application.\n- May require custom theming or overrides for advanced branding needs.\n\n## Alternatives Considered\n\n- **Material UI**: Feature-rich and popular, but introduces a Material Design look that may not fit all branding needs.\n- **Chakra UI**: Modern and flexible, but a smaller ecosystem and less Bootstrap familiarity.\n- **Ant Design**: Comprehensive, but heavier and more opinionated in design.\n- **Custom CSS/SCSS**: Maximum flexibility, but slower development and less consistency.\n\n## Related Decisions\n\n- [ADR-0003: Frontend Framework – React with TypeScript](./#3)\n\n## References\n\n- [React Bootstrap Documentation](https://react-bootstrap.github.io/)\n- [Bootstrap Documentation](https://getbootstrap.com/)\n",
+      "date" : "2025-07-11T01:12:23Z",
+      "format" : "Markdown",
+      "id" : "10",
+      "status" : "Accepted",
+      "title" : " Architectural Decision Record: Use React Bootstrap for Styling"
+    }, {
+      "content" : "# Architectural Decision Record: Use Liquibase for Database Migrations\n\n## Status\n\nAccepted\n\n## Context\n\nThe Case Management System (CMS) requires a reliable and automated way to manage database schema changes across development, testing, and production environments. Schema migrations must be:\n\n- Version-controlled and auditable\n- Repeatable and idempotent\n- Compatible with PostgreSQL and containerized workflows\n- Usable by developers and CI/CD pipelines\n\n## Decision\n\nWe will use **Liquibase** as the tool for managing database migrations.\n\n## Consequences\n\n- Enables tracking and versioning of all schema changes in source control.\n- Supports rollback and forward migration operations.\n- Integrates with Docker and CI/CD for automated deployments.\n- Provides a standard format (XML, YAML, JSON, SQL) for migration scripts.\n- Requires developers to learn Liquibase conventions and syntax.\n\n## Alternatives Considered\n\n- **Flyway**: Simpler, but less flexible for complex migrations and rollback scenarios.\n- **Manual SQL scripts**: Error-prone, lacks versioning and automation.\n- **Entity Framework/ORM migrations**: Tightly coupled to application code, less suitable for multi-language environments.\n\n## Related Decisions\n\n- [ADR-0001: Use PostgreSQL as the Database](./#1)\n\n## References\n\n- [Liquibase Documentation](https://www.liquibase.org/documentation/index.html)",
+      "date" : "2025-07-11T01:12:23Z",
+      "format" : "Markdown",
+      "id" : "2",
+      "status" : "Accepted",
+      "title" : " Architectural Decision Record: Use Liquibase for Database Migrations"
+    }, {
+      "content" : "# Architectural Decision Record: Frontend Framework – React with TypeScript vs Angular vs Vue\n\n## Status\n\nAccepted\n\n## Context\n\nThe Case Management System (CMS) requires a modern, maintainable, and scalable frontend framework. The main options considered are **React with TypeScript**, **Angular**, and **Vue**. All three are widely adopted, support component-based architectures, and have strong community support.\n\n## Decision Drivers\n\n- Team experience and learning curve\n- Ecosystem and third-party library support\n- Type safety and maintainability\n- Integration with existing tooling and CI/CD\n- Long-term scalability and community support\n\n## Options\n\n### 1. React with TypeScript\n\n**Pros:**\n- Flexible, unopinionated, and easy to integrate with other libraries\n- Large ecosystem and community\n- TypeScript adds type safety and better tooling\n- Faster learning curve for teams familiar with JavaScript/TypeScript\n- Easier incremental adoption\n\n**Cons:**\n- Requires manual setup for state management, routing, and form handling\n- Less built-in structure; risk of inconsistent patterns without strong guidelines\n\n### 2. Angular\n\n**Pros:**\n- Complete, opinionated framework with built-in solutions (routing, forms, HTTP, state, etc.)\n- Strong TypeScript support by default\n- CLI tooling for scaffolding and testing\n- Enforces architectural consistency\n\n**Cons:**\n- Steeper learning curve, especially for teams new to Angular\n- Larger bundle sizes and more boilerplate\n- Less flexibility for integrating non-Angular libraries\n\n### 3. Vue (with TypeScript)\n\n**Pros:**\n- Progressive framework: easy to adopt incrementally\n- Simpler learning curve than Angular, approachable for beginners\n- Good TypeScript support (especially in Vue 3)\n- Flexible and lightweight, with official solutions for routing and state management\n- Clean and readable single-file components\n\n**Cons:**\n- Smaller ecosystem and enterprise adoption compared to React and Angular\n- Some advanced TypeScript integrations can be less intuitive than React/Angular\n- Fewer large-scale, enterprise case studies\n\n## Decision\n\nWe will use **React with TypeScript** as the frontend framework for the Case Management System.\n\n## Consequences\n\n- The team benefits from a flexible, widely adopted, and type-safe framework.\n- Faster onboarding and development due to familiarity and ecosystem size.\n- Requires establishing and enforcing architectural guidelines for consistency.\n- Enables easy integration with third-party libraries and tools.\n\n## References\n\n- [React Documentation](https://react.dev/)\n- [Angular Documentation](https://angular.io/)\n- [Vue Documentation](https://vuejs.org/)",
+      "date" : "2025-07-11T01:12:23Z",
+      "format" : "Markdown",
+      "id" : "3",
+      "status" : "Accepted",
+      "title" : " Architectural Decision Record: Frontend Framework – React with TypeScript vs Angular vs Vue"
+    }, {
+      "content" : "# Architectural Decision Record: Use a Modular Monolith in Dotnet for the API Layer\n\n## Status\n\nAccepted\n\n## Context\n\nThe Case Management System (CMS) requires a robust, maintainable, and scalable backend architecture for its API layer. The main architectural options considered were a modular monolith, microservices, and a traditional layered monolith. The API must support:\n\n- Clear separation of business domains (e.g., Cases, Users, Organizations, Categories)\n- Maintainability and testability\n- Efficient development and deployment for a small-to-medium team\n- Integration with PostgreSQL, Keycloak, and other services\n- Flexibility for future evolution (e.g., migration to microservices if needed)\n\n## Decision\n\nWe will implement the API layer as a **modular monolith** using **.NET**.\n\n## Consequences\n\n- Each business domain is encapsulated in its own module, enforcing boundaries and reducing coupling.\n- Simplifies deployment and operational complexity compared to microservices.\n- Enables efficient local development and debugging.\n- Facilitates code sharing and reuse across modules.\n- Provides a clear path to future decomposition into microservices if scaling needs arise.\n- Requires discipline to maintain module boundaries within a single codebase.\n\n## Alternatives Considered\n\n- **Microservices**: Offers independent deployment and scaling, but adds significant operational and architectural complexity not justified at the current scale.\n- **Traditional Monolith**: Simple, but risks tight coupling and lack of clear domain boundaries, making future scaling and maintenance harder.\n\n## Related Decisions\n\n- [ADR-0001: Use PostgreSQL as the Database](./#1)\n- [ADR-0003: Frontend Framework – React with TypeScript](./#3)\n\n## References\n\n- [Microsoft Docs: Modular Monoliths](https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#modular-monolithic-architecture)\n-",
+      "date" : "2025-07-11T01:12:23Z",
+      "format" : "Markdown",
+      "id" : "4",
+      "status" : "Accepted",
+      "title" : " Architectural Decision Record: Use a Modular Monolith in Dotnet for the API Layer"
+    }, {
+      "content" : "# Architectural Decision Record: Start with Application Accounts\n\n## Status\n\nAccepted\n\n## Context\n\nThe Case Management System (CMS) requires a way to manage user authentication and authorization. There are several options for identity management, including integrating with external identity providers (e.g., SSO, OAuth, Keycloak) or managing user accounts internally within the application.\n\nFor the initial phase, the team needs a simple, reliable, and fast-to-implement solution to allow users (administrators, investigators, reviewers, etc.) to log in and manage their accounts.\n\n## Decision\n\nWe will start with **application-managed user accounts** for authentication and authorization. User credentials and profiles will be stored and managed within the CMS database.\n\n## Consequences\n\n- Enables rapid development and onboarding of users without external dependencies.\n- Simplifies initial deployment and testing.\n- User management (registration, password reset, roles) will be handled by the application.\n- Security best practices (password hashing, account lockout, etc.) must be implemented and maintained internally.\n- Future migration to an external identity provider (e.g., Keycloak, SSO) will require a data migration and refactoring of authentication logic.\n\n## Alternatives Considered\n\n- **External Identity Provider (e.g., Keycloak, SSO)**: More scalable and secure for enterprise use, but adds complexity and setup time not needed for the initial phase.\n- **Social Login (Google, Microsoft, etc.)**: Convenient for some users, but not suitable for all roles and organizations.\n\n## Related Decisions\n\n- [ADR-0004: Use a Modular Monolith in .NET for the API Layer](./#4)\n\n## References\n\n- [OWASP Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)\n- [Microsoft Docs: Secure User Authentication](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/)",
+      "date" : "2025-07-11T01:12:23Z",
+      "format" : "Markdown",
+      "id" : "5",
+      "status" : "Accepted",
+      "title" : " Architectural Decision Record: Start with Application Accounts"
+    }, {
+      "content" : "# Architectural Decision Record: Message Bus – Rebus vs MassTransit\n\n## Status\n\nProposed\n\n## Context\n\nThe Case Management System (CMS) may require asynchronous messaging for features such as background processing, integration events, or communication between modules. Two popular .NET libraries for implementing a message bus are **Rebus** and **MassTransit**. Both support multiple transport options (e.g., RabbitMQ, Azure Service Bus), are open source, and are widely used in the .NET ecosystem.\n\n## Decision Drivers\n\n- Ease of integration with .NET modular monolith architecture\n- Learning curve and documentation\n- Community support and maintenance\n- Features (sagas, retries, scheduling, etc.)\n- Flexibility and extensibility\n- Performance and reliability\n\n## Options\n\n### 1. Rebus\n\n**Pros:**\n- Lightweight and easy to set up\n- Minimal configuration and dependencies\n- Good documentation and simple API\n- Suitable for modular monoliths and microservices\n- Actively maintained\n\n**Cons:**\n- Fewer advanced features compared to MassTransit (e.g., sagas, advanced routing)\n- Smaller community and ecosystem\n\n### 2. MassTransit\n\n**Pros:**\n- Rich feature set (sagas, state machines, scheduling, advanced routing, etc.)\n- Strong integration with popular transports (RabbitMQ, Azure Service Bus, etc.)\n- Large community and extensive documentation\n- Used in many enterprise projects\n\n**Cons:**\n- More complex setup and configuration\n- Heavier dependency footprint\n- Steeper learning curve for advanced features\n\n## Recommendation\n\n**Choose Rebus** if:\n- You want a lightweight, easy-to-use library for simple messaging needs\n- Your team prefers minimal configuration and a gentle learning curve\n- Advanced features (sagas, state machines) are not required\n\n**Choose MassTransit** if:\n- You need advanced messaging features (sagas, scheduling, etc.)\n- You expect to scale to more complex workflows or distributed systems\n- Your team is comfortable with a more feature-rich, opinionated framework\n\n## Consequences\n\n- The choice will affect development speed, maintainability, and the ability to implement advanced messaging patterns.\n- Rebus is ideal for simple, modular architectures and rapid adoption.\n- MassTransit is better suited for complex, enterprise-scale scenarios.\n\n## References\n\n- [Rebus Documentation](https://github.com/rebus-org/Rebus/wiki)\n- [MassTransit Documentation](https://masstransit.io/documentation/)",
+      "date" : "2025-07-11T01:12:23Z",
+      "format" : "Markdown",
+      "id" : "6",
+      "status" : "Proposed",
+      "title" : " Architectural Decision Record: Message Bus – Rebus vs MassTransit"
+    }, {
+      "content" : "# Architectural Decision Record: Use GitHub Actions for DevOps\n\n## Status\n\nAccepted\n\n## Context\n\nThe Case Management System (CMS) requires a DevOps solution for continuous integration (CI), continuous deployment (CD), and automation of development workflows. The team uses GitHub for source control, and several options are available for DevOps automation, including GitHub Actions, Azure DevOps, GitLab CI, and Jenkins.\n\n## Decision\n\nWe will use **GitHub Actions** as the primary DevOps automation platform for CI/CD and related workflows.\n\n## Consequences\n\n- Seamless integration with GitHub repositories and pull requests.\n- Enables automation of builds, tests, deployments, and code quality checks.\n- Supports reusable workflows and marketplace actions for common tasks.\n- Reduces context switching for developers by keeping CI/CD within GitHub.\n- Limits on free minutes and concurrency may apply, but are sufficient for current needs.\n- Vendor lock-in to GitHub for DevOps automation.\n\n## Alternatives Considered\n\n- **Azure DevOps**: Powerful and flexible, but adds complexity and requires integration with GitHub.\n- **GitLab CI**: Not natively integrated with GitHub, would require migration or additional setup.\n- **Jenkins**: Highly customizable, but requires self-hosting and maintenance.\n\n## Related Decisions\n\n- [ADR-0003: Frontend Framework – React with TypeScript](./#3)\n- [ADR-0004: Use a Modular Monolith in .NET for the API Layer](./#4)\n\n## References\n\n- [GitHub Actions Documentation](https://docs.github.com/en/actions)",
+      "date" : "2025-07-11T01:12:23Z",
+      "format" : "Markdown",
+      "id" : "7",
+      "status" : "Accepted",
+      "title" : " Architectural Decision Record: Use GitHub Actions for DevOps"
+    }, {
+      "content" : "# Architectural Decision Record: Use Playwright for Test Automation\n\n## Status\n\nAccepted\n\n## Context\n\nThe Case Management System (CMS) requires end-to-end (E2E) and integration test automation to ensure quality and reliability of the user interface and API. The team needs a modern, cross-browser, and developer-friendly tool that integrates well with CI/CD pipelines and supports testing of React (TypeScript) applications.\n\n## Decision\n\nWe will use **Playwright** as the primary tool for automated end-to-end and integration testing.\n\n## Consequences\n\n- Enables fast, reliable, and cross-browser E2E testing (Chromium, Firefox, WebKit).\n- Supports testing of modern web apps built with React and TypeScript.\n- Provides powerful features such as parallel test execution, network mocking, and visual comparisons.\n- Integrates easily with GitHub Actions and other CI/CD platforms.\n- Requires the team to learn Playwright's API and best practices.\n\n## Alternatives Considered\n\n- **Selenium**: Mature and widely used, but slower and less developer-friendly for modern web apps.\n- **Cypress**: Excellent developer experience, but limited to Chromium-based browsers and less flexible for multi-browser testing.\n- **TestCafe**: Good cross-browser support, but smaller ecosystem and less momentum than Playwright.\n\n## Related Decisions\n\n- [ADR-0003: Frontend Framework – React with TypeScript](./#3)\n- [ADR-0007: Use GitHub Actions for DevOps](./#7)\n\n## References\n\n- [Playwright Documentation](https://playwright.dev/)",
+      "date" : "2025-07-11T01:12:23Z",
+      "format" : "Markdown",
+      "id" : "8",
+      "status" : "Accepted",
+      "title" : " Architectural Decision Record: Use Playwright for Test Automation"
+    }, {
+      "content" : "# Architectural Decision Record: Containerize the Application\n\n## Status\n\nAccepted\n\n## Context\n\nThe Case Management System (CMS) needs to be easily deployable, scalable, and consistent across development, testing, and production environments. Containerization allows packaging the application and its dependencies into isolated, reproducible units. The team uses Docker Compose for local development and plans to use containers for deployment in the future.\n\n## Decision\n\nWe will **containerize all application components** (API, frontend, database, supporting services) using Docker. Docker Compose will be used for local orchestration and development.\n\n## Consequences\n\n- Ensures consistent environments across all stages (dev, test, prod)\n- Simplifies onboarding and local development\n- Enables easier scaling and orchestration in the future (e.g., Kubernetes)\n- Facilitates CI/CD automation and infrastructure as code\n- Requires maintaining Dockerfiles and Compose files for all services\n\n## Alternatives Considered\n\n- **Traditional VM-based deployment**: More manual, less portable, and harder to scale.\n- **Platform-specific packaging (e.g., MSI, EXE, ZIP)**: Not suitable for multi-service, cloud-native architectures.\n\n## Related Decisions\n\n- [ADR-0001: Use PostgreSQL as the Database](./#1)\n- [ADR-0007: Use GitHub Actions for DevOps](./#7)\n\n## References\n\n- [Docker Documentation](https://docs.docker.com/)\n-",
+      "date" : "2025-07-11T01:12:23Z",
+      "format" : "Markdown",
+      "id" : "9",
+      "status" : "Accepted",
+      "title" : " Architectural Decision Record: Containerize the Application"
+    } ],
+    "sections" : [ {
+      "content" : "\r\n## Case Classification System\r\n\r\n### V1 Implementation - Standard Classification Rules\r\n\r\n**Category-to-Severity Mapping (Default Rules):**\r\n- HR → Harassment: High Severity (default)\r\n- HR → Discrimination: High Severity (default)\r\n- HR → Policy Violation: Medium Severity (default)\r\n- HR → Workplace Conduct: Medium Severity (default)\r\n- HR → Benefits Issues: Low Severity (default)\r\n- HR → Performance Issues: Low Severity (default)\r\n- HR → Retaliation: High Severity (default)\r\n- Compliance → Regulatory Violation: High Severity (default)\r\n- Compliance → Data Privacy: High Severity (default)\r\n- Compliance → Financial Misconduct: Critical Severity (default)\r\n- Compliance → Safety Violation: High Severity (default)\r\n- Compliance → Legal Compliance: High Severity (default)\r\n- Compliance → Audit Findings: Medium Severity (default)\r\n- Ethics → Conflict of Interest: Medium Severity (default)\r\n- Ethics → Fraud: High Severity (default)\r\n- Ethics → Corruption: Critical Severity (default)\r\n- Ethics → Whistleblower Report: High Severity (default)\r\n- Ethics → Code of Conduct Violation: Medium Severity (default)\r\n- Safety & Security → Workplace Safety: High Severity (default)\r\n- Safety & Security → Security Incident: High Severity (default)\r\n- Safety & Security → Emergency Response: Critical Severity (default)\r\n- Safety & Security → Health Hazard: High Severity (default)\r\n- Safety & Security → Violence/Threats: Critical Severity (mandatory)\r\n- General → General Inquiry: Low Severity (default)\r\n- General → Suggestion: Low Severity (default)\r\n- General → Process Improvement: Low Severity (default)\r\n- General → Other: Low Severity (default)\r\n\r\n**Priority Inference Factors:**\r\n- Base priority from Category/Sub-category mapping\r\n- Severity level modifier (Critical Severity = High Priority minimum)\r\n- Organizational risk factors\r\n- Timeline sensitivity (e.g., regulatory deadlines)\r\n\r\n**Standard Priority Assignments:**\r\n- Critical Severity cases: High Priority (minimum)\r\n- High Severity cases: Medium Priority (default)\r\n- Medium Severity cases: Medium Priority (default)\r\n- Low Severity cases: Low Priority (default)\r\n\r\n### V2 Enhancement - Configurable Classification Rules\r\n\r\n**Future Feature**: Administrators will be able to configure custom classification rules including:\r\n- Custom Category-to-Severity mappings\r\n- Custom Priority inference rules\r\n- Organization-specific classification logic\r\n- Dynamic rule adjustment based on case patterns",
+      "filename" : "Classification.md",
+      "format" : "Markdown",
+      "order" : 1,
+      "title" : ""
+    }, {
+      "content" : "\r\n## Data Model Relationships\r\n\r\n### Core Entity Relationships\r\n\r\n**Customer Organization Relationships:**\r\n- Customer Organization → Categories (one-to-many, configurable)\r\n- Customer Organization → Users (one-to-many)\r\n- Customer Organization → Cases (one-to-many)\r\n- Customer Organization → Custom Questions (one-to-many, through Categories)\r\n\r\n**Category Relationships:**\r\n- Category → Sub-categories (one-to-many)\r\n- Category → Custom Questions (one-to-many)\r\n- Category → Classification Rules (one-to-many for V2)\r\n- Category → User Expertise (many-to-many through Category Expertise)\r\n\r\n**User Relationships:**\r\n- User → Category Expertise (many-to-many with proficiency levels)\r\n- User → Cases (one-to-many as assigned investigator)\r\n- User → Reviews (one-to-many as reviewer)\r\n- User → Investigation Activities (one-to-many for Notes, Questions, Outcomes)\r\n- User → Notifications (one-to-many)\r\n\r\n**Case Relationships:**\r\n- Case → Classification attributes (Category, Sub-category, Severity, Priority)\r\n- Case → Investigation Activities (one-to-many for Notes, Questions, Outcomes)\r\n- Case → Reviews (one-to-many)\r\n- Case → Remedial Cases (one-to-many)\r\n- Case → Custom Question Responses (one-to-many)\r\n\r\n**Investigation Activity Relationships:**\r\n- Investigation Activities → Case (many-to-one)\r\n- Investigation Activities → User (many-to-one as creator)\r\n- Review → Case (many-to-one)\r\n- Review → User (many-to-one as reviewer)",
+      "filename" : "Datamodel.md",
+      "format" : "Markdown",
+      "order" : 2,
+      "title" : ""
+    }, {
+      "content" : "\r\n## Next Steps for Refinement\r\n\r\n1. Create detailed user interface mockups for different user roles with classification filtering\r\n5. Define integration points and API specifications\r\n6. Establish reporting requirements and dashboard designs with classification analytics\r\n7. Design escalation notification and alert systems with priority-based routing\r\n8. Define review criteria and quality scoring mechanisms by category\r\n9. Create role transition workflows and validation rules\r\n10. Design follow-up tracking and evidence management systems\r\n11. Develop category-specific investigation templates and procedures\r\n12. Create classification-based SLA and timeline management",
+      "filename" : "Design.md",
+      "format" : "Markdown",
+      "order" : 3,
+      "title" : ""
+    }, {
+      "content" : "## Ubiquitous Language\r\n\r\n### Core Entities\r\n\r\n**Super User**\r\n- A system-level user with privileges to add and manage Customer Organizations (tenants)\r\n- Can view and manage all organizations, but does not participate in case investigations or reviews\r\n- Responsible for onboarding new customers and delegating administrative access\r\n\r\n**Case**\r\n- A formal record of an incident, complaint, or matter requiring investigation\r\n- Contains initial report details, metadata, and tracking information\r\n- Has a unique identifier and lifecycle status\r\n- Assigned to a specific Customer Organization\r\n- Classified by Category, Sub-category, Severity, and Priority for proper handling and routing\r\n\r\n**Category**\r\n- High-level classification of case type (e.g., HR, Compliance, Ethics, Safety)\r\n- Defines the general domain of the case and determines appropriate handling procedures\r\n- Used for routing cases to appropriate investigators and establishing baseline severity/priority\r\n- Configurable per Customer Organization to match their specific needs\r\n\r\n**Sub-category**\r\n- Specific classification within a Category (e.g., HR → Harassment, Discrimination, Policy Violation)\r\n- Provides detailed context for case handling and investigation approaches\r\n- Used to infer appropriate Severity and Priority levels\r\n- Enables specialized investigation procedures and reviewer assignment\r\n\r\n**Severity**\r\n- Assessment of the potential impact or seriousness of the case\r\n- Levels: Not Defined, Low, Medium, High, Critical\r\n- Influences investigation timeline and resource allocation\r\n- Can be inferred from Category/Sub-category combination or manually set\r\n- Affects escalation thresholds and review requirements\r\n\r\n**Priority**\r\n- Urgency level for case handling and resolution\r\n- Levels: Not Defined, Low, Medium, High\r\n- Determines investigation scheduling and response timeframes\r\n- Can be inferred from Category/Sub-category combination or manually adjusted\r\n- Influences notification frequency and escalation triggers\r\n\r\n**Category Expertise**\r\n- Assignment of User competency in specific Categories for case handling\r\n- Configured by Administrators to match investigator skills and experience\r\n- Used for intelligent case assignment and routing\r\n- Can be weighted or prioritized for assignment algorithms\r\n- Enables specialized handling of complex or sensitive case types\r\n\r\n**Category-Specific Questions**\r\n- Additional intake fields configured per Category by Administrators\r\n- Dynamically displayed during case submission based on selected Category\r\n- Captures specialized information relevant to specific case types\r\n- Supports various question types (text, dropdown, checkbox, etc.)\r\n- Improves case context and investigation efficiency\r\n\r\n**Anonymous Reporter**\r\n- An individual who submits a case without revealing their identity\r\n- Provides initial case details and context\r\n- May or may not have ongoing involvement in the case\r\n\r\n**Customer Organization**\r\n- The entity (company, department, institution) that owns and manages cases\r\n- Has associated Investigators and Reviewers\r\n- Defines case handling procedures and policies\r\n\r\n**User**\r\n- An individual associated with a Customer Organization\r\n- Has defined roles and permissions within their organization\r\n- Authenticated system participant with specific access rights\r\n- Can have Category expertise assignments for specialized case handling\r\n\r\n**Administrator**\r\n- A User role with organizational management capabilities\r\n- Can configure Categories, Sub-categories, and case intake questions\r\n- Manages User role assignments and Category expertise mappings\r\n- Configures organizational settings, review rates, and classification rules\r\n- Has system-wide access within their Customer Organization\r\n\r\n**Investigator Role**\r\n- A role that authorizes a User to actively investigate cases\r\n- Can create Notes, ask Questions, and log Outcomes\r\n- Primary actor responsible for case progression\r\n- All Users with Investigator role can investigate cases assigned to them\r\n\r\n**Reviewer Role**\r\n- A role that includes all Investigator capabilities plus supervisory functions\r\n- Can investigate cases (has all Investigator permissions)\r\n- Receives random sampling of cases for quality review\r\n- Reviews other Investigators' work, never their own investigations\r\n- Has oversight responsibilities for investigation quality and consistency\r\n\r\n### Investigation Activities\r\n\r\n**Note**\r\n- A record of observations, findings, or thoughts made by an Investigator\r\n- Timestamped and attributed to the creator\r\n- Can include text, attachments, or references\r\n\r\n**Question**\r\n- A formal inquiry raised during investigation\r\n- May be directed to specific parties or general investigation points\r\n- Tracks responses and resolution status\r\n\r\n**Outcome**\r\n- A recorded result or decision point in the investigation\r\n- Documents findings, actions taken, or case resolution\r\n- May trigger case status changes\r\n\r\n**Review**\r\n- A quality assurance process where a Reviewer evaluates another Investigator's work\r\n- Triggered automatically when cases are closed (based on organization's review rate)\r\n- Can be initiated through Investigator escalation during active investigation\r\n- Includes assessment of investigation thoroughness, documentation quality, and adherence to procedures\r\n- Results in feedback, recommendations, quality scores, or follow-up actions\r\n- Part of the organization's quality control mechanism\r\n\r\n**Escalation**\r\n- Process by which an Investigator requests Reviewer involvement during active investigation\r\n- Can be initiated for complex cases, policy questions, or when additional expertise is needed\r\n- Transfers case oversight to a Reviewer while maintaining investigation continuity\r\n\r\n**Follow-up**\r\n- Process where Reviewers verify completion of recommended actions from Outcomes\r\n- Includes evidence collection and validation of corrective measures\r\n- Ensures accountability for investigation results and organizational improvements\r\n\r\n**Case Reassignment**\r\n- Process of transferring case ownership from one User to another\r\n- Triggered by role changes, workload balancing, or investigation quality concerns\r\n- Maintains complete audit trail of ownership changes\r\n\r\n**Remedial Case**\r\n- A new case created to address investigation quality issues identified during review\r\n- Generated when initial investigation is deemed inadequate or non-compliant\r\n- Follows standard case lifecycle but focuses on correcting previous investigation deficiencies\r\n\r\n**Notification**\r\n- An alert or message sent to a User about system events or case updates\r\n- Delivered through multiple channels based on user preferences\r\n- Includes case assignments, escalations, reviews, status changes, and follow-up reminders\r\n- Maintains delivery history and read status for audit purposes\r\n\r\n**Notification Channel**\r\n- A delivery method for notifications (In-App, Email, Slack, Teams)\r\n- Configurable per user based on preferences and organizational policies\r\n- Each channel can be enabled/disabled for different notification types\r\n- Supports both immediate and digest delivery modes\r\n\r\n### Process States\r\n\r\n**Case Status**\r\n- New: Recently submitted, awaiting assignment\r\n- Assigned: Case has been assigned to an Investigator\r\n- In Progress: Actively being investigated\r\n- Escalated: Investigation escalated to Reviewer oversight\r\n- Pending: Waiting for additional information or action\r\n- Resolved: Investigation complete with outcome\r\n- Under Review: Case being evaluated for quality assurance\r\n- Closed: Case finalized and archived\r\n- Reopened: Previously closed case reactivated due to new information or quality issues\r\n\r\n**Case Status Transitions**\r\n- New → Assigned (automatic/manual based on expertise matching)\r\n- Assigned → In Progress (when investigator begins work)\r\n- In Progress → Escalated (investigator-initiated)\r\n- In Progress → Pending (waiting for information)\r\n- Pending → In Progress (information received)\r\n- Any active state → Resolved (investigation complete)\r\n- Resolved → Under Review (quality review triggered)\r\n- Under Review → Closed (review passed)\r\n- Under Review → Reopened (review failed, remedial action needed)\r\n\r\n**Payment Portal**\r\n- A system component that enables organizations or users to subscribe, pay for, and manage billing for the Case Management System.\r\n- Integrates with third-party payment providers (e.g., Stripe, PayPal).\r\n- Supports credit card payments and subscription management.\r\n\r\n**Subscription**\r\n- Represents a paid plan or tier for a Customer Organization.\r\n- Determines feature access, user limits, and billing cycles.",
+      "filename" : "Dictionary.md",
+      "format" : "Markdown",
+      "order" : 4,
+      "title" : ""
+    }, {
+      "content" : "## Functional Requirements\r\n\r\n### Super User and Customer Organization Management\r\n- Super User can create, update, and deactivate Customer Organizations (tenants)\r\n- Super User can assign the initial Administrator for each Customer Organization\r\n- Super User has access to system-wide audit logs and organization management features\r\n\r\n### Administrative Configuration\r\n- **Category Management**: Administrators can create, modify, and deactivate Categories and Sub-categories\r\n- **Classification Rules**: Configure automatic Severity and Priority inference based on Category/Sub-category\r\n- **Custom Questions**: Define additional intake questions per Category with various field types\r\n- **Expertise Assignment**: Assign and manage Category expertise for Investigators and Reviewers\r\n- **Review Configuration**: Set review rates and mandatory review requirements per Category\r\n- **Organizational Settings**: Configure notification preferences, workflows, and policies\r\n\r\n### Standard HR/Compliance Categories\r\n**Human Resources (HR)**\r\n- Sub-categories: Harassment, Discrimination, Policy Violation, Workplace Conduct, Benefits Issues, Performance Issues, Retaliation\r\n- Typical Severity: Medium to Critical (based on sub-category)\r\n- Typical Priority: Medium to High\r\n\r\n**Compliance**\r\n- Sub-categories: Regulatory Violation, Data Privacy, Financial Misconduct, Safety Violation, Legal Compliance, Audit Findings\r\n- Typical Severity: High to Critical\r\n- Typical Priority: High\r\n\r\n**Ethics**\r\n- Sub-categories: Conflict of Interest, Fraud, Corruption, Whistleblower Report, Code of Conduct Violation\r\n- Typical Severity: Medium to Critical\r\n- Typical Priority: Medium to High\r\n\r\n**Safety & Security**\r\n- Sub-categories: Workplace Safety, Security Incident, Emergency Response, Health Hazard, Violence/Threats\r\n- Typical Severity: High to Critical\r\n- Typical Priority: High\r\n\r\n**General**\r\n- Sub-categories: General Inquiry, Suggestion, Process Improvement, Other\r\n- Typical Severity: Low to Medium\r\n- Typical Priority: Low to Medium\r\n\r\n### User Management and Role Assignment\r\n- Users are associated with a specific Customer Organization\r\n- Each User can have one or more roles within their organization:\r\n  - Investigator: Can investigate assigned cases\r\n  - Reviewer: Can investigate cases AND review other Investigators' work\r\n  - Administrator: Can configure organizational settings and manage users\r\n- Role assignment is configurable at the Organization level\r\n- Users can only access cases within their Customer Organization\r\n\r\n### Category Expertise Management\r\n- Administrators can assign Category expertise to Users with Investigator or Reviewer roles\r\n- Expertise assignments enable intelligent case routing based on investigator specialization\r\n- Simple Category-to-Priority mapping for V1 (e.g., HR Category → Medium Priority default)\r\n- Expertise can be added, removed, or modified by Administrators\r\n- System uses expertise for automatic case assignment when available\r\n\r\n### Role Transition Management\r\n- Users can transition between roles (Investigator ↔ Reviewer)\r\n- **Investigator to Reviewer transition**:\r\n  - Must complete all assigned cases OR manually reassign them to other Users\r\n  - Cannot review cases they previously investigated\r\n- **Reviewer to Investigator transition**:\r\n  - All pending review assignments must be reassigned to other Reviewers\r\n  - Loses review privileges but retains investigation capabilities\r\n- All role changes maintain complete audit trail\r\n\r\n### Case Creation\r\n- Anonymous reporters can submit cases through a public interface\r\n- Case submission requires selection of target Customer Organization\r\n- System generates unique case identifier\r\n- Initial case details are captured (description, category, sub-category, etc.)\r\n- Reporter selects Category and Sub-category from organization-specific options\r\n- **Dynamic Questions**: Additional Category-specific questions appear based on selected Category\r\n- Category-specific questions are configured by Administrators per organization\r\n- System automatically infers Severity and Priority based on Category/Sub-category\r\n- Case is automatically assigned \"New\" status\r\n- Classification affects initial routing and handling procedures\r\n\r\n### Case Assignment and Investigation\r\n- Cases are assigned to Users with Investigator role based on Category expertise\r\n- **Expertise-Based Assignment**: System prioritizes investigators with matching Category expertise\r\n- Fallback to general assignment if no expertise match is available\r\n- Higher Priority cases receive expedited assignment and investigation timelines\r\n- Critical Severity cases may trigger immediate escalation or specialized handling\r\n- Assignment can be manual or automatic based on organization policies and case classification\r\n- Users can only investigate cases assigned to them\r\n- All investigation activities are tracked and auditable\r\n- Investigators can modify Severity/Priority during investigation based on findings\r\n\r\n### Quality Review Process\r\n- **Automatic Review**: Random sampling of closed cases based on organization-configurable review rate\r\n- **Priority-Based Review**: Higher Priority/Severity cases have increased review probability\r\n- **Category-Specific Review**: Certain categories (e.g., Ethics, Critical Safety) may require mandatory review\r\n- **Escalated Review**: Investigators can escalate active cases to Reviewers for guidance or oversight\r\n- Review sampling excludes cases investigated by the same Reviewer\r\n- Review process evaluates investigation quality, thoroughness, and compliance with category-specific procedures\r\n- Review results are documented and may trigger feedback, retraining, or remedial actions\r\n\r\n### Outcome Follow-up and Accountability\r\n- Reviewers can follow up on investigation Outcomes to verify completion\r\n- Follow-up includes evidence collection and validation of corrective measures\r\n- Incomplete or inadequate follow-up can trigger additional investigation actions\r\n- System tracks follow-up activities and completion status\r\n\r\n### Remedial Case Creation\r\n- Poor investigation quality identified during review can trigger creation of new remedial cases\r\n- Remedial cases address deficiencies in original investigation\r\n- Follow standard case lifecycle but focus on correcting previous investigation issues\r\n- Original case remains in system with linkage to remedial case for audit purposes\r\n\r\n### Access Control\r\n- Anonymous reporters have no ongoing access after case submission\r\n- Users can only access cases for their Customer Organization\r\n- Investigators can investigate cases assigned to them\r\n- Reviewers have all Investigator permissions plus review capabilities\r\n- Reviewers can access cases for review that they did not investigate\r\n- **Administrators have full organizational access**: manage users, configure categories, view all cases\r\n- System maintains separation between different Customer Organizations\r\n\r\n### Reporting and Tracking\r\n- Customer Organizations can view case statistics and metrics by Category, Sub-category, Severity, and Priority\r\n- Case progress can be tracked through status changes with classification context\r\n- Investigation activities are searchable and filterable by classification attributes\r\n- Notification delivery reports and engagement metrics\r\n- Trend analysis by case classification and resolution patterns\r\n- Compliance reporting with category-specific metrics\r\n\r\n### Notification System\r\n- **In-App Notifications**: Primary notification mechanism within the CMS interface\r\n- **External Integrations**: Configurable Email, Slack, and Microsoft Teams notifications\r\n- **User Preferences**: Each user can configure notification channels and frequency\r\n- **Notification Types**: Case assignments, escalations, reviews, status changes, follow-ups, and reminders\r\n- **Delivery Modes**: Immediate alerts or digest summaries based on user preference\r\n- **Audit Trail**: Complete history of notification delivery and read status\r\n\r\n### Notification Triggers\r\n- Case assigned to user (with Priority/Severity indicators)\r\n- Case escalated by investigator\r\n- Case selected for quality review\r\n- Case status changes (resolved, closed, reopened)\r\n- High/Critical Priority cases approaching deadlines\r\n- Follow-up actions required\r\n- Role transition completed\r\n- Review feedback available\r\n- Remedial case created\r\n- Category-specific alerts (e.g., Critical Safety incidents)\r\n\r\n### Payment and Subscription Management\r\n\r\n- Organizations can subscribe to the CMS using a credit card via a secure payment portal.\r\n- The system supports multiple subscription tiers (e.g., Free Trial, Standard, Enterprise).\r\n- Payment portal integrates with a third-party provider (e.g., Stripe, PayPal) for processing credit card payments.\r\n- Super User and/or Organization Admins can view and manage their subscription and billing information.\r\n- Access to features and user seats is controlled based on the active subscription.\r\n- Automated billing, invoicing, and renewal notifications are supported.\r\n- Failed payments trigger notifications and may restrict access after a grace period.\r\n\r\n## Non-Functional Requirements\r\n\r\n### Security\r\n- Anonymous reporter identity protection\r\n- Data encryption in transit and at rest\r\n- Role-based access control\r\n- Audit logging for all system actions\r\n- PCI DSS compliance for handling credit card data (delegated to third-party payment provider)\r\n- Secure integration with payment provider APIs\r\n\r\n### Performance\r\n- System supports multiple concurrent users\r\n- Case search and retrieval within acceptable response times\r\n- Scalable to handle growing case volumes\r\n\r\n### Usability\r\n- Intuitive interface for anonymous case submission\r\n- Professional dashboard for investigators and reviewers\r\n- Mobile-responsive design for field access\r\n\r\n### Compliance\r\n- Data retention policies configurable per Customer Organization\r\n- Export capabilities for regulatory reporting\r\n- Privacy controls for sensitive case information\r\n- Support for invoicing and receipts for tax/regulatory purposes\r\n- Data retention and privacy for billing information\r\n\r\n### Integration\r\n- Email notification delivery\r\n- Slack workspace integration for notifications\r\n- Microsoft Teams channel notifications\r\n- Webhook support for custom integrations\r\n- API endpoints for notification management",
+      "filename" : "FunctionalReqs.md",
+      "format" : "Markdown",
+      "order" : 5,
+      "title" : ""
+    }, {
+      "content" : "\r\n## System Boundaries\r\n\r\n### In Scope\r\n- Case lifecycle management from creation to closure\r\n- Investigation activity tracking and documentation\r\n- Multi-tenant support for Customer Organizations\r\n- Basic reporting and analytics\r\n\r\n### Out of Scope\r\n- Complex workflow automation\r\n- Integration with external legal systems\r\n- Advanced analytics and AI features\r\n- Real-time communication tools\r\n- Workload management and capacity planning (reserved for future versions)",
+      "filename" : "SysBounds.md",
+      "format" : "Markdown",
+      "order" : 6,
+      "title" : ""
+    }, {
+      "content" : "# System Overview\r\n\r\nThe Case Management System (CMS) is a digital platform that enables anonymous reporting and structured investigation of cases within customer organizations. The system facilitates a workflow from initial case creation through investigation to resolution.\r\n\r\n## Key Use Cases\r\n\r\n1. **Super User Onboards Customer Organization**: Super User creates a new Customer Organization and assigns an initial Administrator.\r\n2. **Anonymous Case Submission**: Reporter submits case details with dynamic Category-specific questions\r\n3. **Case Assignment**: System assigns cases to Investigators based on Category expertise\r\n4. **Standard Investigation Process**: Investigator documents findings through Notes, Questions, and Outcomes\r\n5. **Case Escalation**: Investigator escalates complex case to Reviewer for guidance\r\n6. **Quality Review**: Reviewer evaluates completed investigations for quality assurance\r\n7. **Outcome Follow-up**: Reviewer verifies completion of investigation recommendations\r\n8. **Remedial Case Creation**: Poor investigation quality triggers new case to address deficiencies\r\n9. **Role Transition**: User role changes with appropriate case reassignment procedures\r\n10. **Case Reassignment**: Cases transferred between users due to workload or quality concerns\r\n11. **Administrative Configuration**: Administrator configures Categories, expertise, and intake questions\r\n12. **Expertise Management**: Administrator assigns Category expertise to Investigators and Reviewers\r\n13. **Organization Self-Service Subscription**: An organization signs up, enters credit card details, and selects a subscription plan through the payment portal.\r\n14. **Subscription Management**: Organization Admin reviews or updates billing details, upgrades/downgrades plan, or cancels subscription.\r\n15. **Automated Billing and Renewal**: System processes recurring payments and notifies organizations of upcoming renewals or failed payments.",
+      "filename" : "UseCases.md",
+      "format" : "Markdown",
+      "order" : 7,
+      "title" : ""
+    } ]
+  },
+  "id" : 1,
+  "lastModifiedAgent" : "structurizr-ui",
+  "lastModifiedDate" : "2025-07-11T01:12:34Z",
+  "model" : {
+    "people" : [ {
+      "description" : "Has system-wide privileges, including adding new Customer Organizations.",
+      "id" : "1",
+      "location" : "Unspecified",
+      "name" : "Super User",
+      "properties" : {
+        "structurizr.dsl.identifier" : "superuser"
+      },
+      "relationships" : [ {
+        "description" : "Adds and manages Customer Organizations",
+        "destinationId" : "8",
+        "id" : "33",
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Configures categories, users, and organization settings for their Customer Organization.",
+      "id" : "2",
+      "location" : "Unspecified",
+      "name" : "Administrator",
+      "properties" : {
+        "structurizr.dsl.identifier" : "admin"
+      },
+      "relationships" : [ {
+        "description" : "Configures categories, users, org settings",
+        "destinationId" : "8",
+        "id" : "34",
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Investigates assigned cases and documents findings.",
+      "id" : "3",
+      "location" : "Unspecified",
+      "name" : "Investigator",
+      "properties" : {
+        "structurizr.dsl.identifier" : "investigator"
+      },
+      "relationships" : [ {
+        "description" : "Documents findings, updates cases",
+        "destinationId" : "8",
+        "id" : "35",
+        "sourceId" : "3",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Reviews investigations for quality and compliance.",
+      "id" : "4",
+      "location" : "Unspecified",
+      "name" : "Reviewer",
+      "properties" : {
+        "structurizr.dsl.identifier" : "reviewer"
+      },
+      "relationships" : [ {
+        "description" : "Reviews cases",
+        "destinationId" : "8",
+        "id" : "36",
+        "sourceId" : "4",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Submits cases without authentication.",
+      "id" : "5",
+      "location" : "Unspecified",
+      "name" : "Anonymous Reporter",
+      "properties" : {
+        "structurizr.dsl.identifier" : "anonymousreporter"
+      },
+      "relationships" : [ {
+        "description" : "Submits cases via public interface",
+        "destinationId" : "8",
+        "id" : "37",
+        "sourceId" : "5",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    } ],
+    "softwareSystems" : [ {
+      "description" : "Represents a tenant using the CMS.",
+      "documentation" : { },
+      "id" : "6",
+      "location" : "Unspecified",
+      "name" : "Customer Organization",
+      "properties" : {
+        "structurizr.dsl.identifier" : "organization"
+      },
+      "tags" : "Element,Software System"
+    }, {
+      "description" : "Third-party service for handling payments and subscriptions (e.g., Stripe, PayPal).",
+      "documentation" : { },
+      "id" : "7",
+      "location" : "Unspecified",
+      "name" : "Payment Provider",
+      "properties" : {
+        "structurizr.dsl.identifier" : "paymentprovider"
+      },
+      "tags" : "Element,Software System"
+    }, {
+      "containers" : [ {
+        "components" : [ {
+          "description" : "Allows anonymous users to submit cases.",
+          "documentation" : { },
+          "id" : "10",
+          "name" : "Case Submission Form",
+          "properties" : {
+            "structurizr.dsl.identifier" : "casesubmissionform"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Displays cases for investigators and reviewers.",
+          "documentation" : { },
+          "id" : "11",
+          "name" : "Case Management Dashboard",
+          "properties" : {
+            "structurizr.dsl.identifier" : "casemanagementdashboard"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Configuration interface for administrators.",
+          "documentation" : { },
+          "id" : "12",
+          "name" : "Admin Panel",
+          "properties" : {
+            "structurizr.dsl.identifier" : "adminpanel"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Allows administrators to manage users and roles.",
+          "documentation" : { },
+          "id" : "13",
+          "name" : "User Management",
+          "properties" : {
+            "structurizr.dsl.identifier" : "usermanagement"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Allows administrators to configure organization-specific settings.",
+          "documentation" : { },
+          "id" : "14",
+          "name" : "Organization Settings",
+          "properties" : {
+            "structurizr.dsl.identifier" : "organizationsettings"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Displays notifications for case updates and actions.",
+          "documentation" : { },
+          "id" : "15",
+          "name" : "Notification Center",
+          "properties" : {
+            "structurizr.dsl.identifier" : "notificationcenter"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Displays detailed information about a specific case.",
+          "documentation" : { },
+          "id" : "16",
+          "name" : "Case Details",
+          "properties" : {
+            "structurizr.dsl.identifier" : "casedetails"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Handles user login, registration, and session management.",
+          "documentation" : { },
+          "id" : "17",
+          "name" : "Authentication",
+          "properties" : {
+            "structurizr.dsl.identifier" : "authentication"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Handles subscription and billing management.",
+          "documentation" : { },
+          "id" : "18",
+          "name" : "Payment Management",
+          "properties" : {
+            "structurizr.dsl.identifier" : "paymentmanagement"
+          },
+          "tags" : "Element,Component"
+        } ],
+        "description" : "React + TypeScript SPA",
+        "documentation" : { },
+        "id" : "9",
+        "name" : "Web Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "webapp"
+        },
+        "tags" : "Element,Container",
+        "technology" : "Provides the user interface for all roles."
+      }, {
+        "components" : [ {
+          "description" : "Manages case operations.",
+          "documentation" : { },
+          "id" : "20",
+          "name" : "Case Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "casecontroller"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "27",
+            "id" : "47",
+            "sourceId" : "20",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Manages user operations.",
+          "documentation" : { },
+          "id" : "21",
+          "name" : "User Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "usercontroller"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Manages organization settings.",
+          "documentation" : { },
+          "id" : "22",
+          "name" : "Organization Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "organizationcontroller"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Handles notifications for case updates.",
+          "documentation" : { },
+          "id" : "23",
+          "name" : "Notification Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "notificationcontroller"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Handles user authentication and authorization.",
+          "documentation" : { },
+          "id" : "24",
+          "name" : "Authentication Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "authenticationcontroller"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Handles payment processing and subscription management.",
+          "documentation" : { },
+          "id" : "25",
+          "name" : "Payment Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "paymentcontroller"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Event: A new case has been created.",
+          "documentation" : { },
+          "id" : "26",
+          "name" : "CaseCreatedEvent",
+          "properties" : {
+            "structurizr.dsl.identifier" : "casecreatedevent"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Handles case creation and updates, publishing events to the message bus.",
+          "documentation" : { },
+          "id" : "27",
+          "name" : "Case Service",
+          "properties" : {
+            "structurizr.dsl.identifier" : "caseservice"
+          },
+          "relationships" : [ {
+            "description" : "Publishes",
+            "destinationId" : "26",
+            "id" : "38",
+            "sourceId" : "27",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Published to",
+            "destinationId" : "32",
+            "id" : "40",
+            "sourceId" : "27",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Reads and writes case data",
+            "destinationId" : "31",
+            "id" : "44",
+            "sourceId" : "27",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Handles user login, registration, and session management.",
+          "documentation" : { },
+          "id" : "28",
+          "name" : "Authentication Service",
+          "properties" : {
+            "structurizr.dsl.identifier" : "authenticationservice"
+          },
+          "relationships" : [ {
+            "description" : "Manages user credentials",
+            "destinationId" : "31",
+            "id" : "46",
+            "sourceId" : "28",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Listens for case-related events and sends notifications to users.",
+          "documentation" : { },
+          "id" : "29",
+          "name" : "Notification Service",
+          "properties" : {
+            "structurizr.dsl.identifier" : "notificationservice"
+          },
+          "relationships" : [ {
+            "description" : "Subscribes",
+            "destinationId" : "26",
+            "id" : "39",
+            "sourceId" : "29",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Stores notifications",
+            "destinationId" : "31",
+            "id" : "42",
+            "sourceId" : "29",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Logs actions taken on cases for auditing purposes.",
+          "documentation" : { },
+          "id" : "30",
+          "name" : "Audit Service",
+          "properties" : {
+            "structurizr.dsl.identifier" : "auditservice"
+          },
+          "relationships" : [ {
+            "description" : "Records audit logs",
+            "destinationId" : "31",
+            "id" : "45",
+            "sourceId" : "30",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        } ],
+        "description" : "ASP.NET Core Modular Monolith",
+        "documentation" : { },
+        "id" : "19",
+        "name" : "API Layer",
+        "properties" : {
+          "structurizr.dsl.identifier" : "api"
+        },
+        "relationships" : [ {
+          "description" : "Published to",
+          "destinationId" : "32",
+          "id" : "41",
+          "linkedRelationshipId" : "40",
+          "sourceId" : "19"
+        }, {
+          "description" : "Stores notifications",
+          "destinationId" : "31",
+          "id" : "43",
+          "linkedRelationshipId" : "42",
+          "sourceId" : "19"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "Exposes business logic and data access as REST APIs."
+      }, {
+        "description" : "PostgreSQL",
+        "documentation" : { },
+        "id" : "31",
+        "name" : "Database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "db"
+        },
+        "tags" : "Element,Container,db",
+        "technology" : "Stores all structured data for cases, users, organizations, etc."
+      }, {
+        "description" : "Facilitates asynchronous communication between components.",
+        "documentation" : { },
+        "id" : "32",
+        "name" : "Message Bus",
+        "properties" : {
+          "structurizr.dsl.identifier" : "messagebus"
+        },
+        "tags" : "Element,Container"
+      } ],
+      "description" : "Enables anonymous reporting, structured investigation, and administration of cases.",
+      "documentation" : { },
+      "id" : "8",
+      "location" : "Unspecified",
+      "name" : "Case Management System",
+      "properties" : {
+        "structurizr.dsl.identifier" : "cms"
+      },
+      "tags" : "Element,Software System"
+    } ]
+  },
+  "name" : "Name",
+  "properties" : {
+    "structurizr.dsl" : "d29ya3NwYWNlIHsKICAgICFkZWNpc2lvbnMgLi9hZHJzCiAgICAhZG9jcyAuL2RvY3MKICAgIG1vZGVsIHsKICAgICAgICBhcmNoZXR5cGVzIHsKICAgICAgICAgICAgZGF0YXN0b3JlID0gY29udGFpbmVyIHsKICAgICAgICAgICAgICAgIHRhZyAiZGIiCiAgICAgICAgICAgIH0KICAgICAgICB9CgogICAgICAgIHN1cGVyVXNlciA9IHBlcnNvbiAiU3VwZXIgVXNlciIgewogICAgICAgICAgICBkZXNjcmlwdGlvbiAiSGFzIHN5c3RlbS13aWRlIHByaXZpbGVnZXMsIGluY2x1ZGluZyBhZGRpbmcgbmV3IEN1c3RvbWVyIE9yZ2FuaXphdGlvbnMuIgogICAgICAgIH0KCiAgICAgICAgYWRtaW4gPSBwZXJzb24gIkFkbWluaXN0cmF0b3IiIHsKICAgICAgICAgICAgZGVzY3JpcHRpb24gIkNvbmZpZ3VyZXMgY2F0ZWdvcmllcywgdXNlcnMsIGFuZCBvcmdhbml6YXRpb24gc2V0dGluZ3MgZm9yIHRoZWlyIEN1c3RvbWVyIE9yZ2FuaXphdGlvbi4iCiAgICAgICAgfQoKICAgICAgICBpbnZlc3RpZ2F0b3IgPSBwZXJzb24gIkludmVzdGlnYXRvciIgewogICAgICAgICAgICBkZXNjcmlwdGlvbiAiSW52ZXN0aWdhdGVzIGFzc2lnbmVkIGNhc2VzIGFuZCBkb2N1bWVudHMgZmluZGluZ3MuIgogICAgICAgIH0KCiAgICAgICAgcmV2aWV3ZXIgPSBwZXJzb24gIlJldmlld2VyIiB7CiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJSZXZpZXdzIGludmVzdGlnYXRpb25zIGZvciBxdWFsaXR5IGFuZCBjb21wbGlhbmNlLiIKICAgICAgICB9CgogICAgICAgIGFub255bW91c1JlcG9ydGVyID0gcGVyc29uICJBbm9ueW1vdXMgUmVwb3J0ZXIiIHsKICAgICAgICAgICAgZGVzY3JpcHRpb24gIlN1Ym1pdHMgY2FzZXMgd2l0aG91dCBhdXRoZW50aWNhdGlvbi4iCiAgICAgICAgfQoKICAgICAgICBvcmdhbml6YXRpb24gPSBzb2Z0d2FyZVN5c3RlbSAiQ3VzdG9tZXIgT3JnYW5pemF0aW9uIiB7CiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJSZXByZXNlbnRzIGEgdGVuYW50IHVzaW5nIHRoZSBDTVMuIgogICAgICAgIH0KCiAgICAgICAgcGF5bWVudFByb3ZpZGVyID0gc29mdHdhcmVTeXN0ZW0gIlBheW1lbnQgUHJvdmlkZXIiIHsKICAgICAgICAgICAgZGVzY3JpcHRpb24gIlRoaXJkLXBhcnR5IHNlcnZpY2UgZm9yIGhhbmRsaW5nIHBheW1lbnRzIGFuZCBzdWJzY3JpcHRpb25zIChlLmcuLCBTdHJpcGUsIFBheVBhbCkuIgogICAgICAgIH0KCgogICAgICAgIGNtcyA9IHNvZnR3YXJlU3lzdGVtICJDYXNlIE1hbmFnZW1lbnQgU3lzdGVtIiB7CiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJFbmFibGVzIGFub255bW91cyByZXBvcnRpbmcsIHN0cnVjdHVyZWQgaW52ZXN0aWdhdGlvbiwgYW5kIGFkbWluaXN0cmF0aW9uIG9mIGNhc2VzLiIKICAgICAgICAgICAgCiAgICAgICAgICAgIHdlYkFwcCA9IGNvbnRhaW5lciAiV2ViIEFwcGxpY2F0aW9uIiAiUmVhY3QgKyBUeXBlU2NyaXB0IFNQQSIgIlByb3ZpZGVzIHRoZSB1c2VyIGludGVyZmFjZSBmb3IgYWxsIHJvbGVzLiIgewogICAgICAgICAgICAgICAgY2FzZVN1Ym1pc3Npb25Gb3JtID0gY29tcG9uZW50ICJDYXNlIFN1Ym1pc3Npb24gRm9ybSIgIkFsbG93cyBhbm9ueW1vdXMgdXNlcnMgdG8gc3VibWl0IGNhc2VzLiIKICAgICAgICAgICAgICAgIGNhc2VNYW5hZ2VtZW50RGFzaGJvYXJkID0gY29tcG9uZW50ICJDYXNlIE1hbmFnZW1lbnQgRGFzaGJvYXJkIiAiRGlzcGxheXMgY2FzZXMgZm9yIGludmVzdGlnYXRvcnMgYW5kIHJldmlld2Vycy4iCiAgICAgICAgICAgICAgICBhZG1pblBhbmVsID0gY29tcG9uZW50ICJBZG1pbiBQYW5lbCIgIkNvbmZpZ3VyYXRpb24gaW50ZXJmYWNlIGZvciBhZG1pbmlzdHJhdG9ycy4iCiAgICAgICAgICAgICAgICB1c2VyTWFuYWdlbWVudCA9IGNvbXBvbmVudCAiVXNlciBNYW5hZ2VtZW50IiAiQWxsb3dzIGFkbWluaXN0cmF0b3JzIHRvIG1hbmFnZSB1c2VycyBhbmQgcm9sZXMuIgogICAgICAgICAgICAgICAgb3JnYW5pemF0aW9uU2V0dGluZ3MgPSBjb21wb25lbnQgIk9yZ2FuaXphdGlvbiBTZXR0aW5ncyIgIkFsbG93cyBhZG1pbmlzdHJhdG9ycyB0byBjb25maWd1cmUgb3JnYW5pemF0aW9uLXNwZWNpZmljIHNldHRpbmdzLiIKICAgICAgICAgICAgICAgIG5vdGlmaWNhdGlvbkNlbnRlciA9IGNvbXBvbmVudCAiTm90aWZpY2F0aW9uIENlbnRlciIgIkRpc3BsYXlzIG5vdGlmaWNhdGlvbnMgZm9yIGNhc2UgdXBkYXRlcyBhbmQgYWN0aW9ucy4iCiAgICAgICAgICAgICAgICBjYXNlRGV0YWlscyA9IGNvbXBvbmVudCAiQ2FzZSBEZXRhaWxzIiAiRGlzcGxheXMgZGV0YWlsZWQgaW5mb3JtYXRpb24gYWJvdXQgYSBzcGVjaWZpYyBjYXNlLiIKICAgICAgICAgICAgICAgIGF1dGhlbnRpY2F0aW9uID0gY29tcG9uZW50ICJBdXRoZW50aWNhdGlvbiIgIkhhbmRsZXMgdXNlciBsb2dpbiwgcmVnaXN0cmF0aW9uLCBhbmQgc2Vzc2lvbiBtYW5hZ2VtZW50LiIKICAgICAgICAgICAgICAgIHBheW1lbnRNYW5hZ2VtZW50ID0gY29tcG9uZW50ICJQYXltZW50IE1hbmFnZW1lbnQiICJIYW5kbGVzIHN1YnNjcmlwdGlvbiBhbmQgYmlsbGluZyBtYW5hZ2VtZW50LiIKICAgICAgICAgICAgfQogICAgICAgICAgICAKICAgICAgICAgICAgYXBpID0gY29udGFpbmVyICJBUEkgTGF5ZXIiICJBU1AuTkVUIENvcmUgTW9kdWxhciBNb25vbGl0aCIgIkV4cG9zZXMgYnVzaW5lc3MgbG9naWMgYW5kIGRhdGEgYWNjZXNzIGFzIFJFU1QgQVBJcy4iIHsKICAgICAgICAgICAgICAgIGNhc2VDb250cm9sbGVyID0gY29tcG9uZW50ICJDYXNlIENvbnRyb2xsZXIiICJNYW5hZ2VzIGNhc2Ugb3BlcmF0aW9ucy4iCiAgICAgICAgICAgICAgICB1c2VyQ29udHJvbGxlciA9IGNvbXBvbmVudCAiVXNlciBDb250cm9sbGVyIiAiTWFuYWdlcyB1c2VyIG9wZXJhdGlvbnMuIgogICAgICAgICAgICAgICAgb3JnYW5pemF0aW9uQ29udHJvbGxlciA9IGNvbXBvbmVudCAiT3JnYW5pemF0aW9uIENvbnRyb2xsZXIiICJNYW5hZ2VzIG9yZ2FuaXphdGlvbiBzZXR0aW5ncy4iCiAgICAgICAgICAgICAgICBub3RpZmljYXRpb25Db250cm9sbGVyID0gY29tcG9uZW50ICJOb3RpZmljYXRpb24gQ29udHJvbGxlciIgIkhhbmRsZXMgbm90aWZpY2F0aW9ucyBmb3IgY2FzZSB1cGRhdGVzLiIKICAgICAgICAgICAgICAgIGF1dGhlbnRpY2F0aW9uQ29udHJvbGxlciA9IGNvbXBvbmVudCAiQXV0aGVudGljYXRpb24gQ29udHJvbGxlciIgIkhhbmRsZXMgdXNlciBhdXRoZW50aWNhdGlvbiBhbmQgYXV0aG9yaXphdGlvbi4iCiAgICAgICAgICAgICAgICBwYXltZW50Q29udHJvbGxlciA9IGNvbXBvbmVudCAiUGF5bWVudCBDb250cm9sbGVyIiAiSGFuZGxlcyBwYXltZW50IHByb2Nlc3NpbmcgYW5kIHN1YnNjcmlwdGlvbiBtYW5hZ2VtZW50LiIKCiAgICAgICAgICAgICAgICBjYXNlQ3JlYXRlZEV2ZW50ID0gY29tcG9uZW50ICJDYXNlQ3JlYXRlZEV2ZW50IiAiRXZlbnQ6IEEgbmV3IGNhc2UgaGFzIGJlZW4gY3JlYXRlZC4iCiAgICAgICAgICAgICAgICBjYXNlU2VydmljZSA9IGNvbXBvbmVudCAiQ2FzZSBTZXJ2aWNlIiAiUHVibGlzaGVzIGFuZCBzdWJzY3JpYmVzIHRvIGNhc2UtcmVsYXRlZCBldmVudHMuIiB7CiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkhhbmRsZXMgY2FzZSBjcmVhdGlvbiBhbmQgdXBkYXRlcywgcHVibGlzaGluZyBldmVudHMgdG8gdGhlIG1lc3NhZ2UgYnVzLiIKICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICBhdXRoZW50aWNhdGlvblNlcnZpY2UgPSBjb21wb25lbnQgIkF1dGhlbnRpY2F0aW9uIFNlcnZpY2UiICJNYW5hZ2VzIHVzZXIgYXV0aGVudGljYXRpb24gYW5kIGF1dGhvcml6YXRpb24uIiB7CiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkhhbmRsZXMgdXNlciBsb2dpbiwgcmVnaXN0cmF0aW9uLCBhbmQgc2Vzc2lvbiBtYW5hZ2VtZW50LiIKICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICBub3RpZmljYXRpb25TZXJ2aWNlID0gY29tcG9uZW50ICJOb3RpZmljYXRpb24gU2VydmljZSIgIlN1YnNjcmliZXMgdG8gZXZlbnRzIGFuZCBzZW5kcyBub3RpZmljYXRpb25zLiIgewogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJMaXN0ZW5zIGZvciBjYXNlLXJlbGF0ZWQgZXZlbnRzIGFuZCBzZW5kcyBub3RpZmljYXRpb25zIHRvIHVzZXJzLiIKICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICBhdWRpdFNlcnZpY2UgPSBjb21wb25lbnQgIkF1ZGl0IFNlcnZpY2UiICJSZWNvcmRzIGFjdGlvbnMgYW5kIGNoYW5nZXMgZm9yIGNvbXBsaWFuY2UuIiB7CiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkxvZ3MgYWN0aW9ucyB0YWtlbiBvbiBjYXNlcyBmb3IgYXVkaXRpbmcgcHVycG9zZXMuIgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CgogICAgICAgICAgICBkYiA9IGRhdGFzdG9yZSAiRGF0YWJhc2UiICJQb3N0Z3JlU1FMIiAiU3RvcmVzIGFsbCBzdHJ1Y3R1cmVkIGRhdGEgZm9yIGNhc2VzLCB1c2Vycywgb3JnYW5pemF0aW9ucywgZXRjLiIKCiAgICAgICAgICAgIAogICAgICAgICAgICBtZXNzYWdlQnVzID0gY29udGFpbmVyICJNZXNzYWdlIEJ1cyIgewogICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkZhY2lsaXRhdGVzIGFzeW5jaHJvbm91cyBjb21tdW5pY2F0aW9uIGJldHdlZW4gY29tcG9uZW50cy4iCiAgICAgICAgICAgIH0KCiAgICAgICAgfQoKICAgICAgICAvLyBSZWxhdGlvbnNoaXBzCiAgICAgICAgc3VwZXJVc2VyIC0+IGNtcyAiQWRkcyBhbmQgbWFuYWdlcyBDdXN0b21lciBPcmdhbml6YXRpb25zIgogICAgICAgIGFkbWluIC0+IGNtcyAiQ29uZmlndXJlcyBjYXRlZ29yaWVzLCB1c2Vycywgb3JnIHNldHRpbmdzIgogICAgICAgIGludmVzdGlnYXRvciAtPiBjbXMgIkRvY3VtZW50cyBmaW5kaW5ncywgdXBkYXRlcyBjYXNlcyIKICAgICAgICByZXZpZXdlciAtPiBjbXMgIlJldmlld3MgY2FzZXMiCiAgICAgICAgYW5vbnltb3VzUmVwb3J0ZXIgLT4gY21zICJTdWJtaXRzIGNhc2VzIHZpYSBwdWJsaWMgaW50ZXJmYWNlIgoKICAgICAgICBjYXNlU2VydmljZSAtPiBjYXNlQ3JlYXRlZEV2ZW50ICJQdWJsaXNoZXMiCiAgICAgICAgbm90aWZpY2F0aW9uU2VydmljZSAtPiBjYXNlQ3JlYXRlZEV2ZW50ICJTdWJzY3JpYmVzIgogICAgICAgIGNhc2VTZXJ2aWNlIC0+IG1lc3NhZ2VCdXMgIlB1Ymxpc2hlZCB0byIKICAgICAgICBub3RpZmljYXRpb25TZXJ2aWNlIC0+IGRiICJTdG9yZXMgbm90aWZpY2F0aW9ucyIKICAgICAgICBjYXNlU2VydmljZSAtPiBkYiAiUmVhZHMgYW5kIHdyaXRlcyBjYXNlIGRhdGEiCiAgICAgICAgYXVkaXRTZXJ2aWNlIC0+IGRiICJSZWNvcmRzIGF1ZGl0IGxvZ3MiCiAgICAgICAgYXV0aGVudGljYXRpb25TZXJ2aWNlIC0+IGRiICJNYW5hZ2VzIHVzZXIgY3JlZGVudGlhbHMiCgogICAgICAgIGNhc2VDb250cm9sbGVyIC0+IGNhc2VTZXJ2aWNlICJVc2VzIgogICAgfQoKICAgIHZpZXdzIHsKICAgICAgICBzeXN0ZW1Db250ZXh0IGNtcyB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgICAgICBhdXRvbGF5b3V0IGxyCiAgICAgICAgICAgIHRpdGxlICJDYXNlIE1hbmFnZW1lbnQgU3lzdGVtIC0gU3lzdGVtIENvbnRleHQiCiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJTaG93cyB0aGUgQ01TLCBpdHMgdXNlcnMsIGFuZCBleHRlcm5hbCBzeXN0ZW1zLiIKICAgICAgICB9CgogICAgICAgIGNvbnRhaW5lciBjbXMgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b2xheW91dCBscgogICAgICAgICAgICB0aXRsZSAiQ2FzZSBNYW5hZ2VtZW50IFN5c3RlbSAtIENvbnRhaW5lciBWaWV3IgogICAgICAgICAgICBkZXNjcmlwdGlvbiAiU2hvd3MgdGhlIG1haW4gY29udGFpbmVycyBhbmQgdGhlaXIgcmVsYXRpb25zaGlwcy4iCiAgICAgICAgfQoKICAgICAgICBjb21wb25lbnQgd2ViQXBwIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgICAgIGF1dG9sYXlvdXQgdGIKICAgICAgICAgICAgdGl0bGUgIkNhc2UgTWFuYWdlbWVudCBTeXN0ZW0gLSBXZWIgQXBwbGljYXRpb24gQ29tcG9uZW50cyIKICAgICAgICAgICAgZGVzY3JpcHRpb24gIkRldGFpbHMgdGhlIGNvbXBvbmVudHMgd2l0aGluIHRoZSB3ZWIgYXBwbGljYXRpb24uIgogICAgICAgIH0KCiAgICAgICAgY29tcG9uZW50IGFwaSB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgICAgICBhdXRvbGF5b3V0IHRiCiAgICAgICAgICAgIHRpdGxlICJDYXNlIE1hbmFnZW1lbnQgU3lzdGVtIC0gQVBJIExheWVyIENvbXBvbmVudHMiCiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJEZXRhaWxzIHRoZSBjb21wb25lbnRzIHdpdGhpbiB0aGUgQVBJIGxheWVyLiIKICAgICAgICB9CiAgICAgICAgc3R5bGVzIHsKICAgICAgICAgICAgZWxlbWVudCAiZGIiIHsKICAgICAgICAgICAgICAgIHNoYXBlIGN5bGluZGVyCiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICNmNWRhODEKICAgICAgICAgICAgICAgIGNvbG9yICMwMDAwMDAKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0KfQ=="
+  },
+  "views" : {
+    "componentViews" : [ {
+      "automaticLayout" : {
+        "applied" : true,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "containerId" : "9",
+      "description" : "Details the components within the web application.",
+      "dimensions" : {
+        "height" : 811,
+        "width" : 6890
+      },
+      "elements" : [ {
+        "id" : "10",
+        "x" : 6220,
+        "y" : 172
+      }, {
+        "id" : "11",
+        "x" : 5470,
+        "y" : 172
+      }, {
+        "id" : "12",
+        "x" : 4720,
+        "y" : 172
+      }, {
+        "id" : "13",
+        "x" : 3970,
+        "y" : 172
+      }, {
+        "id" : "14",
+        "x" : 3220,
+        "y" : 172
+      }, {
+        "id" : "15",
+        "x" : 2470,
+        "y" : 172
+      }, {
+        "id" : "16",
+        "x" : 1720,
+        "y" : 172
+      }, {
+        "id" : "17",
+        "x" : 970,
+        "y" : 172
+      }, {
+        "id" : "18",
+        "x" : 220,
+        "y" : 172
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "generatedKey" : true,
+      "key" : "Component-001",
+      "order" : 3,
+      "title" : "Case Management System - Web Application Components"
+    }, {
+      "automaticLayout" : {
+        "applied" : true,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "containerId" : "19",
+      "description" : "Details the components within the API layer.",
+      "dimensions" : {
+        "height" : 2011,
+        "width" : 7528
+      },
+      "elements" : [ {
+        "id" : "20",
+        "x" : 220,
+        "y" : 171
+      }, {
+        "id" : "21",
+        "x" : 4720,
+        "y" : 171
+      }, {
+        "id" : "22",
+        "x" : 3970,
+        "y" : 171
+      }, {
+        "id" : "23",
+        "x" : 3220,
+        "y" : 171
+      }, {
+        "id" : "24",
+        "x" : 2470,
+        "y" : 171
+      }, {
+        "id" : "25",
+        "x" : 1720,
+        "y" : 171
+      }, {
+        "id" : "26",
+        "x" : 5049,
+        "y" : 1371
+      }, {
+        "id" : "27",
+        "x" : 5470,
+        "y" : 771
+      }, {
+        "id" : "28",
+        "x" : 970,
+        "y" : 171
+      }, {
+        "id" : "29",
+        "x" : 4720,
+        "y" : 771
+      }, {
+        "id" : "30",
+        "x" : 5470,
+        "y" : 171
+      }, {
+        "id" : "31",
+        "x" : 6878,
+        "y" : 1371
+      }, {
+        "id" : "32",
+        "x" : 6128,
+        "y" : 1371
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "generatedKey" : true,
+      "key" : "Component-002",
+      "order" : 4,
+      "relationships" : [ {
+        "id" : "38"
+      }, {
+        "id" : "39"
+      }, {
+        "id" : "40"
+      }, {
+        "id" : "42",
+        "vertices" : [ {
+          "x" : 5320,
+          "y" : 1071
+        }, {
+          "x" : 6728,
+          "y" : 1371
+        } ]
+      }, {
+        "id" : "44"
+      }, {
+        "id" : "45",
+        "vertices" : [ {
+          "x" : 6661,
+          "y" : 771
+        } ]
+      }, {
+        "id" : "46",
+        "vertices" : [ {
+          "x" : 1570,
+          "y" : 471
+        }, {
+          "x" : 6070,
+          "y" : 771
+        } ]
+      }, {
+        "id" : "47",
+        "vertices" : [ {
+          "x" : 820,
+          "y" : 471
+        }, {
+          "x" : 5320,
+          "y" : 771
+        } ]
+      } ],
+      "title" : "Case Management System - API Layer Components"
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "lastSavedView" : "SystemContext-001",
+      "metadataSymbols" : "SquareBrackets",
+      "styles" : {
+        "elements" : [ {
+          "background" : "#f5da81",
+          "color" : "#000000",
+          "shape" : "Cylinder",
+          "tag" : "db"
+        } ]
+      },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "applied" : true,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "description" : "Shows the main containers and their relationships.",
+      "dimensions" : {
+        "height" : 1411,
+        "width" : 1640
+      },
+      "elements" : [ {
+        "id" : "9",
+        "x" : 220,
+        "y" : 772
+      }, {
+        "id" : "19",
+        "x" : 220,
+        "y" : 172
+      }, {
+        "id" : "31",
+        "x" : 970,
+        "y" : 772
+      }, {
+        "id" : "32",
+        "x" : 970,
+        "y" : 172
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "generatedKey" : true,
+      "key" : "Container-001",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "41"
+      }, {
+        "id" : "43"
+      } ],
+      "softwareSystemId" : "8",
+      "title" : "Case Management System - Container View"
+    } ],
+    "systemContextViews" : [ {
+      "automaticLayout" : {
+        "applied" : true,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "description" : "Shows the CMS, its users, and external systems.",
+      "dimensions" : {
+        "height" : 3100,
+        "width" : 1600
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 200,
+        "y" : 151
+      }, {
+        "id" : "2",
+        "x" : 200,
+        "y" : 751
+      }, {
+        "id" : "3",
+        "x" : 200,
+        "y" : 1351
+      }, {
+        "id" : "4",
+        "x" : 200,
+        "y" : 1951
+      }, {
+        "id" : "5",
+        "x" : 200,
+        "y" : 2551
+      }, {
+        "id" : "8",
+        "x" : 950,
+        "y" : 1351
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "generatedKey" : true,
+      "key" : "SystemContext-001",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "33",
+        "vertices" : [ {
+          "x" : 650,
+          "y" : 601
+        } ]
+      }, {
+        "id" : "34"
+      }, {
+        "id" : "35"
+      }, {
+        "id" : "36"
+      }, {
+        "id" : "37",
+        "vertices" : [ {
+          "x" : 650,
+          "y" : 2401
+        } ]
+      } ],
+      "softwareSystemId" : "8",
+      "title" : "Case Management System - System Context"
+    } ]
+  }
+}
