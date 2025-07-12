@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Ryan Freels
+      comment: Create UserTenant table
+      changes:
+        - createTable:
+            tableName: userTenant
+            columns:
+              - column:
+                  name: userId
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    foreignKeyName: fk_user_tenant_user
+                    referencedColumnNames: userId
+                    referencedTableName: users
+              - column:
+                  name: tenantId
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    foreignKeyName: fk_user_tenant_tenant
+                    referencedTableName: tenant
+                    referencedColumnNames: tenantId
+              - column:
+                  name: roleId
+                  type: smallint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_tenant_role
+                    referencedTableName: role
+                    referencedColumnNames: roleId

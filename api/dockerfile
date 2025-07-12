@@ -1,0 +1,22 @@
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+
+# Copy solution and restore as distinct layers
+COPY OpenCms.sln ./
+COPY OpenCms.Api/OpenCms.Api.csproj OpenCms.Api/
+COPY OpenCms.Core/OpenCms.Core.csproj OpenCms.Core/
+COPY OpenCms.Domain/OpenCms.Domain.csproj OpenCms.Domain/
+COPY OpenCms.Persistence/OpenCms.Persistence.csproj OpenCms.Persistence/
+RUN dotnet restore
+
+# Copy everything else and build
+COPY . .
+WORKDIR /src/OpenCms.Api
+RUN dotnet publish -c Release -o /app/publish --no-restore
+
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
+WORKDIR /app
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "OpenCms.Api.dll"]

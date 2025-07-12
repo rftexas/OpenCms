@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Ryan Freels
+      comment: Create Tenant table
+      changes:
+        - createTable:
+            tableName: tenant
+            columns:
+              - column:
+                  name: tenantId
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid ()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: tenantName
+                  type: varchar(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tenantDescription
+                  type: varchar(255)

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Management System - UI Mockups</title>
+    <link rel="stylesheet" href="./ui.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Case Management System</h1>
+            <p>User Interface Mockups & Prototypes</p>
+        </div>
+        <!-- Reviewer Dashboard -->
+        <div id="reviewer" class="mockup-section">
+            <div class="dashboard">
+                <div class="sidebar">
+                    <h3>Navigation</h3>
+                    <ul>
+                        <li><a href="#" class="active">My Cases</a></li>
+                        <li><a href="#">Reviews Queue</a></li>
+                        <li><a href="#">All Cases</a></li>
+                        <li><a href="#">Quality Reports</a></li>
+                        <li><a href="#">Team Management</a></li>
+                        <li><a href="#">Settings</a></li>
+                    </ul>
+
+                    <h3 style="margin-top: 30px;">Review Stats</h3>
+                    <ul>
+                        <li style="color: #3498db;">Pending Reviews: 5</li>
+                        <li style="color: #27ae60;">Completed: 23</li>
+                        <li style="color: #e74c3c;">Escalated: 2</li>
+                    </ul>
+                </div>
+
+                <div class="main-content">
+                    <div class="dashboard-header">
+                        <h1 class="dashboard-title">Reviewer Dashboard</h1>
+                        <div class="user-info">
+                            <div class="user-avatar">SM</div>
+                            <div>
+                                <div style="font-weight: 600;">Sarah Miller</div>
+                                <div style="color: #7f8c8d; font-size: 14px;">Reviewer</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">Active Cases</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">5</div>
+                            <div class="stat-label">Pending Reviews</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">95%</div>
+                            <div class="stat-label">Quality Score</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">28</div>
+                            <div class="stat-label">Reviews This Month</div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <h3 style="color: #2c3e50;">Cases Awaiting Review</h3>
+                        <div class="filters">
+                            <div class="filter-group">
+                                <label>Review Type</label>
+                                <select>
+                                    <option>All Reviews</option>
+                                    <option>Quality Review</option>
+                                    <option>Escalated Review</option>
+                                    <option>Mandatory Review</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="cases-table">
+                        <thead>
+                            <tr>
+                                <th>Case ID</th>
+                                <th>Category</th>
+                                <th>Investigator</th>
+                                <th>Review Type</th>
+                                <th>Priority</th>
+                                <th>Closed Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>CMS-2024-001</strong></td>
+                                <td>HR - Harassment</td>
+                                <td><span class="status-badge status-progress">In Progress</span></td>
+                                <td><span class="priority-badge priority-high">High</span></td>
+                                <td><span class="severity-badge severity-high">High</span></td>
+                                <td>2024-01-15</td>
+                                <td><a href="#" class="btn btn-primary"
+                                        style="padding: 6px 12px; font-size: 14px;">View</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>CMS-2024-007</strong></td>
+                                <td>Ethics - Fraud</td>
+                                <td><span class="status-badge status-assigned">Assigned</span></td>
+                                <td><span class="priority-badge priority-high">High</span></td>
+                                <td><span class="severity-badge severity-high">High</span></td>
+                                <td>2024-01-20</td>
+                                <td><a href="#" class="btn btn-primary"
+                                        style="padding: 6px 12px; font-size: 14px;">View</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>CMS-2024-012</strong></td>
+                                <td>Safety - Workplace</td>
+                                <td><span class="status-badge status-escalated">Escalated</span></td>
+                                <td><span class="priority-badge priority-medium">Medium</span></td>
+                                <td><span class="severity-badge severity-medium">Medium</span></td>
+                                <td>2024-01-18</td>
+                                <td><a href="#" class="btn btn-primary"
+                                        style="padding: 6px 12px; font-size: 14px;">View</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Case Management System. All rights reserved.</p>
+    </div>
+</body>

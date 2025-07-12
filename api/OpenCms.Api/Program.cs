@@ -1,41 +1,73 @@
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using OpenCms.Persistence.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi()
+    .AddAuthentication();
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null; // Preserve property names
+        options.JsonSerializerOptions.DictionaryKeyPolicy = null; // Preserve dictionary keys
+    });
+
+builder.Services.Scan(scan => scan.FromAssemblies(typeof(OpenCms.Domain.User).Assembly,
+        typeof(OpenCms.Persistence.Repositories.IUserRepository).Assembly,
+        typeof(OpenCms.Core.Authentication.Commands.Login).Assembly)
+    .AddClasses(c => c.AssignableTo(
+        typeof(OpenCms.Domain.IQueryHandler<,>)))
+    .AsImplementedInterfaces()
+    .WithScopedLifetime()
+    .AddClasses(c => c.AssignableTo(typeof(IRepository<,>)))
+    .AsImplementedInterfaces()
+    .WithScopedLifetime());
+
+builder.Services.AddEntityFrameworkNpgsql().AddDbContext<OpenCms.Persistence.DataContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.UseCors(cors =>
+    {
+        cors.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
 }
 
-app.UseHttpsRedirection();
-
-var summaries = new[]
+if (app.Environment.IsEnvironment("Docker"))
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
+    app.UseCors(cors =>
+    {
+        cors.WithOrigins("http://localhost:3000")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+}
+else
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    app.UseCors(cors =>
+    {
+        cors.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+    app.UseHttpsRedirection();
+}
+
+app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

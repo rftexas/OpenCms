@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Ryan Freels
+      comment: Create TenantIdentityType table
+      changes:
+        - createTable:
+            tableName: tenantIdentityType
+            columns:
+              - column:
+                  name: tenantId
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    foreignKeyName: fk_tenant_identity_type_tenant
+                    referencedColumnNames: tenantId
+                    referencedTableName: tenant
+              - column:
+                  name: identityTypeId
+                  type: smallint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    foreignKeyName: fk_tenant_identity_type_identity_type
+                    referencedTableName: identityType
+                    referencedColumnNames: identityTypeId
