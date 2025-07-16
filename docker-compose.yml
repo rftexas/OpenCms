@@ -2,14 +2,73 @@ services:
   db:
     image: postgres:alpine
     ports:
-      - 6543:5432
+      - 5432:5432
     environment:
-      POSTGRES_PASSWORD: ${DbPassword}
-      POSTGRES_USERNAME: liquibase
-      POSTGRES_DB: open-cms
+      POSTGRES_PASSWORD: admin
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
       interval: 10s
       retries: 5
       start_period: 30s
       timeout: 10s
+    volumes:
+      - ./db/init-scripts:/docker-entrypoint-initdb.d
+      - postgres_data:/var/lib/postgresql/data
+  liquibase:
+    image: liquibase/liquibase:alpine
+    container_name: liquibase-migration
+    environment:
+      LIQUIBASE_COMMAND_URL: jdbc:postgresql://db:5432/opencms
+      LIQUIBASE_COMMAND_USERNAME: liquibase
+      LIQUIBASE_COMMAND_PASSWORD: liquibase
+      LIQUIBASE_COMMAND_CHANGELOG_FILE: ./changelog/open-cms.yaml
+      LIQUIBASE_COMMAND_LOG_LEVEL: INFO
+    volumes:
+      - ./db:/liquibase/changelog
+    depends_on:
+      db:
+        condition: service_healthy
+    command: update
+  structurizr:
+    image: structurizr/lite:latest
+    container_name: structurizr
+    ports:
+      - 8080:8080
+    volumes:
+      - ./documentation:/usr/local/structurizr
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+  webapp:
+    build:
+      context: ./web
+      dockerfile: dockerfile
+    container_name: webapp
+    ports:
+      - 3000:80
+    depends_on:
+      - api
+    environment:
+      - NODE_ENV=production
+  api:
+    build:
+      context: ./api
+      dockerfile: dockerfile
+    container_name: api
+    ports:
+      - 5000:80
+    depends_on:
+      liquibase:
+        condition: service_completed_successfully
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Host=db;Database=opencms;Username=postgres;Password=admin
+volumes:
+  postgres_data:

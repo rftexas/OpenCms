@@ -1,0 +1,14 @@
+{
+  "name": "opencms",
+  "version": "1.0.0",
+  "description": "My intentions with the OpenCMS platform is to create an application that any company can get up and running in minutes to fill Compliance Reporting needs.",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.53.2",
+    "@types/node": "^24.0.12"
+  }
+}

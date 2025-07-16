@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Ryan Freels
+      comment: Create User table
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: userId
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid ()
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: firstName
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lastName
+                  type: varchar(50)

@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Ryan Freels
+      comment: Create Identity Type table
+      changes:
+        - createTable:
+            tableName: identityType
+            columns:
+              - column:
+                  name: identityTypeId
+                  type: smallint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: identityTypeName
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: identityTypeDescription
+                  type: varchar(255)
+  - changeSet:
+      id: 2
+      author: Ryan Freels
+      preConditions:
+        - onFailure: MARK_RAN
+        - rowCount:
+            expectedRows: 0
+            tableName: identityType
+      comment: Add Default Identity Types
+      changes:
+        - insert:
+            tableName: identityType
+            columns:
+              - column:
+                  name: identityTypeId
+                  value: 1
+              - column:
+                  name: identityTypeName
+                  value: "OpenCms"
+              - column:
+                  name: identityTypeDescription
+                  value: "Identity managed by the CMS"

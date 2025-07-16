@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Case View - Investigator | Case Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./ui.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-2 d-none d-md-block sidebar py-4">
+                <div class="px-3 mb-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="user-avatar">JD</div>
+                        <div>
+                            <div style="font-weight: 600;">John Doe</div>
+                            <div style="color: #7f8c8d; font-size: 14px;">Investigator</div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav flex-column px-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./investigator.html">My Cases</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./investigator-notifications.html">Notifications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./investigator-settings.html">Settings</a>
+                    </li>
+                </ul>
+                <div class="px-3 mt-4">
+                    <h6 class="text-muted">My Expertise</h6>
+                    <ul class="list-unstyled">
+                        <li><span class="badge bg-primary">HR</span> Harassment</li>
+                        <li><span class="badge bg-primary">Ethics</span> Fraud</li>
+                        <li><span class="badge bg-primary">Safety</span> Workplace</li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- Main Content -->
+            <main class="col-md-10 ms-sm-auto px-4 py-4">
+                <!-- Case Header -->
+                <div class="case-header mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                            <h3 class="mb-1">Case <span class="text-primary">CMS-2024-001</span></h3>
+                            <span class="badge bg-secondary me-2">HR - Harassment</span>
+                            <span class="badge bg-info text-dark me-2">Assigned</span>
+                            <span class="badge bg-danger me-2">High Priority</span>
+                            <span class="badge bg-warning text-dark me-2">High Severity</span>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-secondary btn-sm me-2">Escalate</button>
+                            <button class="btn btn-outline-primary btn-sm">Close Case</button>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Assigned Investigator:</strong> John Doe<br>
+                        <strong>Reported:</strong> 2024-01-15 &nbsp; | &nbsp;
+                        <strong>Status:</strong> In Progress &nbsp; | &nbsp;
+                        <strong>Organization:</strong> ACME Corporation
+                    </div>
+                    <div>
+                        <strong>Description:</strong>
+                        <p class="mb-0">
+                            Anonymous report of repeated inappropriate comments by a supervisor in the HR department.
+                            Reporter requests confidentiality and prompt investigation.
+                        </p>
+                    </div>
+                </div>
+                <!-- Case Details Tabs -->
+                <ul class="nav nav-tabs mb-4" id="caseTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="activity-tab" data-bs-toggle="tab"
+                            data-bs-target="#activity" type="button" role="tab" aria-controls="activity"
+                            aria-selected="true">Activity</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes"
+                            type="button" role="tab" aria-controls="notes" aria-selected="false">Notes</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="questions-tab" data-bs-toggle="tab" data-bs-target="#questions"
+                            type="button" role="tab" aria-controls="questions" aria-selected="false">Questions</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="outcomes-tab" data-bs-toggle="tab" data-bs-target="#outcomes"
+                            type="button" role="tab" aria-controls="outcomes" aria-selected="false">Outcomes</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="caseTabsContent">
+                    <!-- Activity Timeline -->
+                    <div class="tab-pane fade show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+                        <div class="activity-timeline">
+                            <div class="timeline-item">
+                                <div class="mb-1"><strong>2024-01-15 09:12</strong> <span class="badge bg-primary">Case
+                                        Created</span></div>
+                                <div>Case submitted anonymously via web portal.</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="mb-1"><strong>2024-01-15 10:05</strong> <span
+                                        class="badge bg-info text-dark">Assigned</span></div>
+                                <div>Case assigned to John Doe (Investigator).</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="mb-1"><strong>2024-01-16 14:22</strong> <span class="badge bg-success">Note
+                                        Added</span></div>
+                                <div>Initial review of HR records completed. No prior complaints found for subject.
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="mb-1"><strong>2024-01-17 09:30</strong> <span
+                                        class="badge bg-warning text-dark">Question Raised</span></div>
+                                <div>Requested interview with reporter for additional details.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Notes Tab -->
+                    <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+                        <div class="mb-3">
+                            <form class="d-flex gap-2">
+                                <input type="text" class="form-control" placeholder="Add a note..." />
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </form>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="fw-bold">2024-01-16 14:22</div>
+                                Initial review of HR records completed. No prior complaints found for subject.
+                            </li>
+                            <li class="list-group-item">
+                                <div class="fw-bold">2024-01-18 11:10</div>
+                                Interview scheduled with subject for 2024-01-20.
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Questions Tab -->
+                    <div class="tab-pane fade" id="questions" role="tabpanel" aria-labelledby="questions-tab">
+                        <div class="mb-3">
+                            <form class="d-flex gap-2">
+                                <input type="text" class="form-control" placeholder="Ask a question..." />
+                                <button type="submit" class="btn btn-primary">Ask</button>
+                            </form>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="fw-bold">2024-01-17 09:30</div>
+                                Requested interview with reporter for additional details.
+                            </li>
+                            <li class="list-group-item">
+                                <div class="fw-bold">2024-01-18 13:45</div>
+                                Asked HR for subject's training records.
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Outcomes Tab -->
+                    <div class="tab-pane fade" id="outcomes" role="tabpanel" aria-labelledby="outcomes-tab">
+                        <div class="mb-3">
+                            <form class="d-flex gap-2">
+                                <input type="text" class="form-control" placeholder="Log an outcome..." />
+                                <button type="submit" class="btn btn-primary">Log</button>
+                            </form>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="fw-bold">2024-01-20 16:00</div>
+                                Outcome: Interview scheduled with subject. Awaiting results.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 Case Management System. All rights reserved.</p>
+    </div>
+    <!-- Bootstrap JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

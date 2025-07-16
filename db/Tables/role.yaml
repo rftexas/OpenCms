@@ -1,0 +1,93 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Ryan Freels
+      comment: Create Role table
+      changes:
+        - createTable:
+            tableName: role
+            columns:
+              - column:
+                  name: roleId
+                  type: smallint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: roleName
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: roleDescription
+                  type: varchar(255)
+  - changeSet:
+      id: 2
+      author: Ryan Freels
+      preConditions:
+        - onFailure: MARK_RAN
+        - rowCount:
+            expectedRows: 0
+            tableName: role
+      comment: Add Default Roles
+      changes:
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: roleId
+                  valueNumeric: 1
+              - column:
+                  name: roleName
+                  value: "Admin"
+              - column:
+                  name: roleDescription
+                  value: "Administrator with full access"
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: roleId
+                  valueNumeric: 2
+              - column:
+                  name: roleName
+                  value: "Investigator"
+              - column:
+                  name: roleDescription
+                  value: "Investigates cases and manages evidence"
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: roleId
+                  valueNumeric: 3
+              - column:
+                  name: roleName
+                  value: "Reporter"
+              - column:
+                  name: roleDescription
+                  value: "The person who reports the case"
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: roleId
+                  valueNumeric: 4
+              - column:
+                  name: roleName
+                  value: "Super User"
+              - column:
+                  name: roleDescription
+                  value: "System Administrator with full access to all tenants"
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: roleId
+                  valueNumeric: 5
+              - column:
+                  name: roleName
+                  value: "reviewer"
+              - column:
+                  name: roleDescription
+                  value: "Reviews cases and provides feedback"
