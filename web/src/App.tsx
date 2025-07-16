@@ -6,10 +6,12 @@ export function App() {
 
   const authenticated = useSelector((state: any) => state.auth.isAuthenticated);
   const navigate = useNavigate();
-  if (!authenticated) {
-    navigate('/login');
-  }
 
+  React.useEffect(() => {
+    if (!authenticated) {
+      navigate('/login');
+    }
+  }, [authenticated, navigate]);
   return (
     <>
       <h1>Parcel React App</h1>
