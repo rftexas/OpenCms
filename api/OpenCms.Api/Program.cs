@@ -1,10 +1,18 @@
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using OpenCms.Persistence.Repositories;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+// Add OpenTelemetry tracing
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracing =>
+    {
+        tracing
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddEntityFrameworkCoreInstrumentation(opt => opt.SetDbStatementForText = true)
+            .AddOtlpExporter();
+    });
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -19,7 +27,7 @@ builder.Services.AddControllers()
     });
 
 builder.Services.Scan(scan => scan.FromAssemblies(typeof(OpenCms.Domain.User).Assembly,
-        typeof(OpenCms.Persistence.Repositories.IUserRepository).Assembly,
+        typeof(IUserRepository).Assembly,
         typeof(OpenCms.Core.Authentication.Commands.Login).Assembly)
     .AddClasses(c => c.AssignableTo(
         typeof(OpenCms.Domain.IQueryHandler<,>)))

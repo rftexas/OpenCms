@@ -55,7 +55,7 @@ services:
     depends_on:
       - api
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=docker
   api:
     build:
       context: ./api

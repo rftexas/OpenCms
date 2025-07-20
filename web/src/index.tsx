@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { App } from './App';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import { AnonymousLogin } from './authentication/login';

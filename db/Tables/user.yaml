@@ -5,10 +5,10 @@ databaseChangeLog:
       comment: Create User table
       changes:
         - createTable:
-            tableName: users
+            tableName: user
             columns:
               - column:
-                  name: userId
+                  name: user_id
                   type: uuid
                   defaultValueComputed: gen_random_uuid ()
                   constraints:
@@ -20,10 +20,10 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: firstName
+                  name: first_name
                   type: varchar(50)
                   constraints:
                     nullable: false
               - column:
-                  name: lastName
+                  name: last_name
                   type: varchar(50)

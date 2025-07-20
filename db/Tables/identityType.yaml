@@ -5,21 +5,21 @@ databaseChangeLog:
       comment: Create Identity Type table
       changes:
         - createTable:
-            tableName: identityType
+            tableName: identity_type
             columns:
               - column:
-                  name: identityTypeId
+                  name: identity_type_id
                   type: smallint
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: identityTypeName
+                  name: identity_type_name
                   type: varchar(50)
                   constraints:
                     nullable: false
               - column:
-                  name: identityTypeDescription
+                  name: identity_type_description
                   type: varchar(255)
   - changeSet:
       id: 2
@@ -28,18 +28,18 @@ databaseChangeLog:
         - onFailure: MARK_RAN
         - rowCount:
             expectedRows: 0
-            tableName: identityType
+            tableName: identity_type
       comment: Add Default Identity Types
       changes:
         - insert:
-            tableName: identityType
+            tableName: identity_type
             columns:
               - column:
-                  name: identityTypeId
+                  name: identity_type_id
                   value: 1
               - column:
-                  name: identityTypeName
+                  name: identity_type_name
                   value: "OpenCms"
               - column:
-                  name: identityTypeDescription
+                  name: identity_type_description
                   value: "Identity managed by the CMS"

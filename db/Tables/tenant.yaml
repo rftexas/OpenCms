@@ -8,17 +8,31 @@ databaseChangeLog:
             tableName: tenant
             columns:
               - column:
-                  name: tenantId
+                  name: tenant_id
                   type: uuid
                   defaultValueComputed: gen_random_uuid ()
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: tenantName
+                  name: tenant_name
                   type: varchar(150)
                   constraints:
                     nullable: false
               - column:
-                  name: tenantDescription
+                  name: tenant_description
                   type: varchar(255)
+  - changeSet:
+      id: 2
+      author: github-copilot
+      comment: Insert default tenant Freels Technology
+      changes:
+        - insert:
+            tableName: tenant
+            columns:
+              - column:
+                  name: tenant_name
+                  value: Freels Technology
+              - column:
+                  name: tenant_description
+                  value: The default tenant.

@@ -8,22 +8,22 @@ public class IdentityTypeConfiguration : IEntityTypeConfiguration<IdentityType>
 {
     public void Configure(EntityTypeBuilder<IdentityType> builder)
     {
-        builder.ToTable("IdentityTypes");
+        builder.ToTable("identity_type");
 
         builder.HasKey(x => x.IdentityTypeId);
 
         builder.Property(x => x.IdentityTypeId)
-            .HasColumnName("identityTypeId")
+            .HasColumnName("identity_type_id")
             .HasConversion<IdentityTypeId.EfCoreValueConverter>()
             .IsRequired();
 
         builder.Property(x => x.Name)
-            .HasColumnName("identityTypeName")
+            .HasColumnName("identity_type_name")
             .IsRequired()
             .HasMaxLength(50);
 
         builder.Property(x => x.Description)
-            .HasColumnName("identityTypeDescription")
+            .HasColumnName("identity_type_description")
             .HasMaxLength(255);
     }
 }
