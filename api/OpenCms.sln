@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCms.Domain", "OpenCms.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCms.Persistence", "OpenCms.Persistence\OpenCms.Persistence.csproj", "{23657775-1EFB-41E5-81DC-D65D356C83FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenCms.Test", "OpenCms.Test\OpenCms.Test.csproj", "{43DF4D96-2414-45BE-87F7-CC7823CDC867}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{23657775-1EFB-41E5-81DC-D65D356C83FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23657775-1EFB-41E5-81DC-D65D356C83FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23657775-1EFB-41E5-81DC-D65D356C83FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43DF4D96-2414-45BE-87F7-CC7823CDC867}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43DF4D96-2414-45BE-87F7-CC7823CDC867}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43DF4D96-2414-45BE-87F7-CC7823CDC867}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43DF4D96-2414-45BE-87F7-CC7823CDC867}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

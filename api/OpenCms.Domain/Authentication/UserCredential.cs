@@ -8,8 +8,8 @@ public class UserCredential
     private const int SaltSize = 16; // Size of the salt in bytes
     private const int Iterations = 100_000; // Number of iterations for PBKDF2
     public Guid UserCredentialId { get; set; }
-    public byte[] PasswordHash { get; set; }
-    public byte[] PasswordSalt { get; set; }
+    public byte[] PasswordHash { get; set; } = new byte[HashSize];
+    public byte[] PasswordSalt { get; set; } = new byte[SaltSize];
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public bool IsActive { get; set; }
@@ -31,4 +31,5 @@ public class UserCredential
         using var pbkdf2 = new Rfc2898DeriveBytes(newPassword, PasswordSalt, Iterations, HashAlgorithmName.SHA256);
         PasswordHash = pbkdf2.GetBytes(HashSize);
     }
+
 }

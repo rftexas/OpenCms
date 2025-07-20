@@ -5,23 +5,42 @@ databaseChangeLog:
       comment: Create TenantIdentityType table
       changes:
         - createTable:
-            tableName: tenantIdentityType
+            tableName: tenant_identity_type
             columns:
               - column:
-                  name: tenantId
+                  name: tenant_id
                   type: uuid
                   constraints:
                     nullable: false
                     primaryKey: true
                     foreignKeyName: fk_tenant_identity_type_tenant
-                    referencedColumnNames: tenantId
+                    referencedColumnNames: tenant_id
                     referencedTableName: tenant
               - column:
-                  name: identityTypeId
+                  name: identity_type_id
                   type: smallint
                   constraints:
                     nullable: false
                     primaryKey: true
                     foreignKeyName: fk_tenant_identity_type_identity_type
-                    referencedTableName: identityType
-                    referencedColumnNames: identityTypeId
+                    referencedTableName: identity_type
+                    referencedColumnNames: identity_type_id
+  - changeSet:
+      id: 2
+      author: github-copilot
+      preConditions:
+        - onFail: MARK_RAN
+        - rowCount:
+            expectedRows: 0
+            tableName: tenant_identity_type
+      comment: Insert tenant_identity_type for Freels Technology tenant and OpenCms identity type
+      changes:
+        - sql:
+            splitStatements: true
+            stripComments: true
+            sql: |
+              INSERT INTO tenant_identity_type (tenant_id, identity_type_id)
+              VALUES (
+                (SELECT tenant_id FROM tenant WHERE tenant_name = 'Freels Technology'),
+                (SELECT identity_type_id FROM identity_type WHERE identity_type_name = 'OpenCms')
+              );

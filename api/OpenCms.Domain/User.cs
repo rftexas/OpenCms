@@ -10,6 +10,7 @@ public class User
     public string FirstName { get; private set; }
     public string? LastName { get; private set; }
     public UserCredential? Credential { get; private set; }
+    public HashSet<PasswordResetToken> PasswordResetTokens { get; } = new();
 
     private User(UserId userId, Email email, string firstName, string? lastName)
     {
@@ -65,6 +66,34 @@ public class User
                 Credential = credential.Value
             };
         }
+    }
+
+    public PasswordResetToken CreatePasswordResetToken()
+    {
+        if (Credential == null)
+        {
+            throw new InvalidOperationException("User does not have a credential to create a password reset token.");
+        }
+
+        var token = new PasswordResetToken.Builder()
+            .WithUserId(UserId)
+            .WithToken(Guid.NewGuid().ToString())
+            .WithExpiresAt(DateTime.UtcNow.AddHours(1))
+            .Build();
+
+        PasswordResetTokens.Add(token);
+        return token;
+    }
+
+    public void SetName(string firstName, string? lastName = null)
+    {
+        if (string.IsNullOrEmpty(firstName))
+        {
+            throw new ArgumentException("First name cannot be empty.", nameof(firstName));
+        }
+
+        FirstName = firstName;
+        LastName = lastName;
     }
 }
 

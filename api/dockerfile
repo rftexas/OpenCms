@@ -8,6 +8,7 @@ COPY OpenCms.Api/OpenCms.Api.csproj OpenCms.Api/
 COPY OpenCms.Core/OpenCms.Core.csproj OpenCms.Core/
 COPY OpenCms.Domain/OpenCms.Domain.csproj OpenCms.Domain/
 COPY OpenCms.Persistence/OpenCms.Persistence.csproj OpenCms.Persistence/
+COPY OpenCms.Test/OpenCms.Test.csproj OpenCms.Test/
 RUN dotnet restore
 
 # Copy everything else and build

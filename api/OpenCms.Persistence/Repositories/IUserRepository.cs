@@ -1,11 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using OpenCms.Domain;
+using OpenCms.Domain.Authentication;
 
 namespace OpenCms.Persistence.Repositories;
 
 public interface IUserRepository : IRepository<UserId, User>
 {
     Task<User?> GetByEmail(Email email);
+
+    Task<User?> GetByPasswordResetToken(PasswordResetToken token);
 }
 
 public class UserRepository(DataContext dataContext) : IUserRepository
@@ -27,6 +30,12 @@ public class UserRepository(DataContext dataContext) : IUserRepository
     public async Task<User?> GetById(UserId key)
     {
         return await dataContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserId == key);
+    }
+
+    public Task<User?> GetByPasswordResetToken(PasswordResetToken token)
+    {
+        return dataContext.Users.Include(u => u.PasswordResetTokens).Include(u => u.Credential)
+            .FirstOrDefaultAsync(u => u.PasswordResetTokens.Any(t => t.Token == token.Token && !t.Used));
     }
 
     public async Task<User> Update(User entity)

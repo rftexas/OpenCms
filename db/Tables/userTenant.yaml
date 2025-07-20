@@ -5,31 +5,31 @@ databaseChangeLog:
       comment: Create UserTenant table
       changes:
         - createTable:
-            tableName: userTenant
+            tableName: user_tenant
             columns:
               - column:
-                  name: userId
+                  name: user_id
                   type: uuid
                   constraints:
                     nullable: false
                     primaryKey: true
                     foreignKeyName: fk_user_tenant_user
-                    referencedColumnNames: userId
-                    referencedTableName: users
+                    referencedColumnNames: user_id
+                    referencedTableName: user
               - column:
-                  name: tenantId
+                  name: tenant_id
                   type: uuid
                   constraints:
                     nullable: false
                     primaryKey: true
                     foreignKeyName: fk_user_tenant_tenant
                     referencedTableName: tenant
-                    referencedColumnNames: tenantId
+                    referencedColumnNames: tenant_id
               - column:
-                  name: roleId
+                  name: role_id
                   type: smallint
                   constraints:
                     nullable: false
                     foreignKeyName: fk_user_tenant_role
                     referencedTableName: role
-                    referencedColumnNames: roleId
+                    referencedColumnNames: role_id

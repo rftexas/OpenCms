@@ -1,6 +1,6 @@
 const target = process.env.NODE_ENV === 'production'
-    ? 'https://api.yourapp.com'
-    : 'https://localhost:3001/api/';
+    ? 'http://localhost:5000'
+    : 'http://api:80';
 
 module.exports = {
     '/api/*': {
