@@ -24,7 +24,7 @@ interface AuthState {
 
 const initialState: AuthState = {
     user: null,
-    token: localStorage.getItem('token'),
+    token: localStorage.getItem('token') || sessionStorage.getItem('token'),
     isAuthenticated: false,
     isLoading: false,
     error: null,
@@ -33,7 +33,7 @@ const initialState: AuthState = {
 // Async thunks
 export const loginUser = createAsyncThunk(
     'auth/login',
-    async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
+    async ({ email, password, rememberMe = false }: { email: string; password: string; rememberMe?: boolean }, { rejectWithValue }) => {
         try {
             // Try HTTPS first, fallback to HTTP for development
             let apiUrl = 'https://localhost:7011/api/authentication/login';
@@ -54,7 +54,17 @@ export const loginUser = createAsyncThunk(
 
             const data = await response.json();
             console.log('Login success response:', data);
-            localStorage.setItem('token', data.token);
+
+            // Store token based on rememberMe preference
+            if (rememberMe) {
+                localStorage.setItem('token', data.token);
+                // Remove from sessionStorage if it exists
+                sessionStorage.removeItem('token');
+            } else {
+                sessionStorage.setItem('token', data.token);
+                // Remove from localStorage if it exists
+                localStorage.removeItem('token');
+            }
 
             // Transform API response to match our User interface
             return {
@@ -88,6 +98,7 @@ export const validateToken = createAsyncThunk(
 
             if (!response.ok) {
                 localStorage.removeItem('token');
+                sessionStorage.removeItem('token');
                 return rejectWithValue('Invalid token');
             }
 
@@ -95,6 +106,7 @@ export const validateToken = createAsyncThunk(
             return userData;
         } catch (error) {
             localStorage.removeItem('token');
+            sessionStorage.removeItem('token');
             return rejectWithValue('Token validation failed');
         }
     }
@@ -104,16 +116,18 @@ export const logoutUser = createAsyncThunk(
     'auth/logout',
     async (_, { rejectWithValue }) => {
         try {
+            const token = localStorage.getItem('token') || sessionStorage.getItem('token');
             await fetch('https://localhost:5001/api/auth/logout', {
                 method: 'POST',
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    Authorization: `Bearer ${token}`,
                 },
             });
         } catch (error) {
             // Continue with logout even if API call fails
         } finally {
             localStorage.removeItem('token');
+            sessionStorage.removeItem('token');
         }
     }
 );
@@ -175,6 +189,9 @@ const authSlice = createSlice({
                 state.token = null;
                 state.isAuthenticated = false;
                 state.error = null;
+                // Clear tokens from both storage locations
+                localStorage.removeItem('token');
+                sessionStorage.removeItem('token');
             });
     },
 });
@@ -198,6 +215,11 @@ export const hasRole = (user: User | null, roleName: string): boolean => {
 export const getTenantsByRole = (user: User | null, roleName: string): UserTenant[] => {
     if (!user) return [];
     return user.tenants.filter(t => t.roleName === roleName);
+};
+
+// Helper function to check if user has persistent login (remember me)
+export const isUserRemembered = (): boolean => {
+    return !!localStorage.getItem('token');
 };
 
 // Selectors

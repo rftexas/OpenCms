@@ -52,7 +52,7 @@ export const AnonymousLogin: React.FC = () => {
         setShowError('');
 
         // Dispatch login action
-        const result = await dispatch(loginUser({ email, password }));
+        const result = await dispatch(loginUser({ email, password, rememberMe }));
 
         // Handle any additional login logic if needed
         if (loginUser.rejected.match(result)) {

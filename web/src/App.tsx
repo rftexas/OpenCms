@@ -12,7 +12,7 @@ export function App() {
 
   // Check for existing token on app startup
   React.useEffect(() => {
-    const storedToken = localStorage.getItem('token');
+    const storedToken = localStorage.getItem('token') || sessionStorage.getItem('token');
     if (storedToken && !isAuthenticated) {
       dispatch(validateToken(storedToken));
     }
