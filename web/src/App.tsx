@@ -1,17 +1,28 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
-import './App.css';
 import { useNavigate } from 'react-router';
+import './App.css';
+import { useAppDispatch } from './store/hooks/redux';
+import { validateToken } from './store/slices/authSlice';
 
 export function App() {
-
-  const authenticated = useSelector((state: any) => state.auth.isAuthenticated);
+  const { isAuthenticated, isLoading, token } = useSelector((state: any) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  // Check for existing token on app startup
+  React.useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken && !isAuthenticated) {
+      dispatch(validateToken(storedToken));
+    }
+  }, [dispatch, isAuthenticated]);
 
   React.useEffect(() => {
-    if (!authenticated) {
+    if (!isLoading && !isAuthenticated) {
       navigate('/login');
     }
-  }, [authenticated, navigate]);
+  }, [isAuthenticated, isLoading, navigate]);
   return (
     <>
       <h1>Parcel React App</h1>

@@ -11,6 +11,7 @@ public class User
     public string? LastName { get; private set; }
     public UserCredential? Credential { get; private set; }
     public HashSet<PasswordResetToken> PasswordResetTokens { get; } = new();
+    public HashSet<UserTenant> UserTenants { get; } = new();
 
     private User(UserId userId, Email email, string firstName, string? lastName)
     {
@@ -94,6 +95,69 @@ public class User
 
         FirstName = firstName;
         LastName = lastName;
+    }
+
+    // Tenant and Role helper methods
+    public IEnumerable<Tenant> GetTenants()
+    {
+        return UserTenants.Where(ut => ut.Tenant != null).Select(ut => ut.Tenant!);
+    }
+
+    public IEnumerable<Role> GetRoles()
+    {
+        return UserTenants.Where(ut => ut.Role != null).Select(ut => ut.Role!).Distinct();
+    }
+
+    public IEnumerable<string> GetRoleNames()
+    {
+        return GetRoles().Select(r => r.Name);
+    }
+
+    public bool HasRole(string roleName)
+    {
+        return UserTenants.Any(ut => ut.IsInRole(roleName));
+    }
+
+    public bool IsSuperUser()
+    {
+        return UserTenants.Any(ut => ut.IsSuperUser());
+    }
+
+    public bool IsAdministrator()
+    {
+        return UserTenants.Any(ut => ut.IsAdministrator());
+    }
+
+    public bool IsInvestigator()
+    {
+        return UserTenants.Any(ut => ut.IsInvestigator());
+    }
+
+    public bool IsReviewer()
+    {
+        return UserTenants.Any(ut => ut.IsReviewer());
+    }
+
+    public bool HasAccessToTenant(TenantId tenantId)
+    {
+        return UserTenants.Any(ut => ut.TenantId == tenantId);
+    }
+
+    public Role? GetRoleForTenant(TenantId tenantId)
+    {
+        return UserTenants.FirstOrDefault(ut => ut.TenantId == tenantId)?.Role;
+    }
+
+    public string GetPrimaryRoleName()
+    {
+        // Super User takes precedence
+        if (IsSuperUser()) return Role.WellKnownRoles.SuperUser;
+        if (IsAdministrator()) return Role.WellKnownRoles.Administrator;
+        if (IsInvestigator()) return Role.WellKnownRoles.Investigator;
+        if (IsReviewer()) return Role.WellKnownRoles.Reviewer;
+
+        // Fallback to first role or Reporter
+        return GetRoleNames().FirstOrDefault() ?? Role.WellKnownRoles.Reporter;
     }
 }
 

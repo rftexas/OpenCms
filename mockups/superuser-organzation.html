@@ -71,7 +71,6 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Name</th>
-                                <th>Domain</th>
                                 <th>Status</th>
                                 <th>Created</th>
                                 <th>Admin</th>
@@ -81,7 +80,6 @@
                         <tbody>
                             <tr>
                                 <td><strong>ACME Corporation</strong></td>
-                                <td>acme.com</td>
                                 <td><span class="badge bg-success">Active</span></td>
                                 <td>2024-01-10</td>
                                 <td>Alex Admin (alex@acme.com)</td>
@@ -94,7 +92,6 @@
                             </tr>
                             <tr>
                                 <td><strong>Global Tech Solutions</strong></td>
-                                <td>globaltech.com</td>
                                 <td><span class="badge bg-success">Active</span></td>
                                 <td>2024-02-03</td>
                                 <td>Jane Smith (jane@globaltech.com)</td>
@@ -137,11 +134,6 @@
                                     <input type="text" class="form-control" id="orgName" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="orgDomain" class="form-label">Domain</label>
-                                    <input type="text" class="form-control" id="orgDomain" placeholder="e.g. acme.com"
-                                        required>
-                                </div>
-                                <div class="mb-3">
                                     <label for="orgAdmin" class="form-label">Initial Admin Email</label>
                                     <input type="email" class="form-control" id="orgAdmin" required>
                                 </div>
@@ -174,11 +166,6 @@
                                 <div class="mb-3">
                                     <label for="editOrgName" class="form-label">Organization Name</label>
                                     <input type="text" class="form-control" id="editOrgName" value="ACME Corporation"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editOrgDomain" class="form-label">Domain</label>
-                                    <input type="text" class="form-control" id="editOrgDomain" value="acme.com"
                                         required>
                                 </div>
                                 <div class="mb-3">

@@ -11,7 +11,7 @@ public class LoginHandler(IUserRepository userRepository) : IQueryHandler<Login,
     public async Task<User?> Handle(Login query, CancellationToken cancellationToken = default)
     {
         var isValid = false;
-        var user = await userRepository.GetByEmail(query.Email);
+        var user = await userRepository.GetByEmailWithTenants(query.Email);
         isValid = user is not null && user.Credential is not null &&
             user.Credential.ValidatePassword(query.Password);
 

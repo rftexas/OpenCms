@@ -10,9 +10,8 @@ test.describe('User Login', () => {
     await page.fill('input[type="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
 
-    // TODO: Expect redirect
-    //await expect(page).toHaveURL(/dashboard/);
-    //await expect(page.locator('h1')).toContainText('Dashboard');
+    await expect(page).toHaveURL(/dashboard/);
+    await expect(page.locator('h1')).toContainText('Dashboard');
   });
 
   test('should show error for missing email or password', async ({ page }) => {
@@ -36,19 +35,18 @@ test.describe('User Login', () => {
     await expect(toastMsg).toContainText(/invalid email or password/i);
   });
 
-  // TODO: implement remember me functionality
-  // test('should allow user to use "Remember me"', async ({ page, context }) => {
-  //   await page.goto('/login');
-  //   await page.fill('input[type="email"]', 'testuser@example.com');
-  //   await page.fill('input[type="password"]', 'TestPassword123!');
-  //   await page.check('input#rememberMe');
-  //   await page.click('button[type="submit"]');
-  //   await expect(page).toHaveURL(/dashboard/);
-  //   // Simulate browser restart by creating a new page in the same context
-  //   const newPage = await context.newPage();
-  //   await newPage.goto('/dashboard');
-  //   await expect(newPage).toHaveURL(/dashboard/);
-  // });
+  test('should allow user to use "Remember me"', async ({ page, context }) => {
+    await page.goto('/login');
+    await page.fill('input[type="email"]', 'testuser@example.com');
+    await page.fill('input[type="password"]', 'TestPassword123!');
+    await page.check('input#rememberMe');
+    await page.click('button[type="submit"]');
+    await expect(page).toHaveURL(/dashboard/);
+    // Simulate browser restart by creating a new page in the same context
+    const newPage = await context.newPage();
+    await newPage.goto('/dashboard');
+    await expect(newPage).toHaveURL(/dashboard/);
+  });
 
   test('should allow user to initiate password reset', async ({ page }) => {
     await page.goto('/login');
