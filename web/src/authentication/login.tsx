@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Container, Modal, Row, Toast, Form, Button, Card } from "react-bootstrap";
+import { Button, Card, Container, Form, Modal, Row, Toast } from "react-bootstrap";
+import { useLocation, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../store/hooks/redux";
 import { loginUser } from "../store/slices/authSlice";
 
@@ -10,17 +11,27 @@ export const AnonymousLogin: React.FC = () => {
     const [rememberMe, setRememberMe] = useState(false);
     const [showError, setShowError] = useState('');
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     // Show toast error if invalid credentials from backend
-    const authError = useAppSelector(s => s.auth.error);
+    const { error: authError, isAuthenticated, isLoading } = useAppSelector(s => s.auth);
+
     React.useEffect(() => {
         if (authError) {
             setShowError(authError);
         }
     }, [authError]);
 
+    // Redirect on successful authentication
+    React.useEffect(() => {
+        if (isAuthenticated) {
+            const from = (location.state as any)?.from?.pathname || '/dashboard';
+            navigate(from, { replace: true });
+        }
+    }, [isAuthenticated, navigate, location]);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
         // Show error if either field is empty
@@ -37,8 +48,17 @@ export const AnonymousLogin: React.FC = () => {
             return;
         }
 
-        dispatch(loginUser({ email, password }));
-        // The backend should set s.auth.error to 'Invalid email or password.' if credentials are wrong
+        // Clear any existing errors
+        setShowError('');
+
+        // Dispatch login action
+        const result = await dispatch(loginUser({ email, password, rememberMe }));
+
+        // Handle any additional login logic if needed
+        if (loginUser.rejected.match(result)) {
+            // Error will be shown via the authError useEffect
+            console.log('Login failed:', result.payload);
+        }
     };
 
     return (
@@ -111,8 +131,15 @@ export const AnonymousLogin: React.FC = () => {
                                 </div>
 
 
-                                <Button type="submit" variant="primary" className="w-100">
-                                    Sign In
+                                <Button type="submit" variant="primary" className="w-100" disabled={isLoading}>
+                                    {isLoading ? (
+                                        <>
+                                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                            Signing In...
+                                        </>
+                                    ) : (
+                                        'Sign In'
+                                    )}
                                 </Button>
                                 <div className="mb-3 d-flex justify-content-between align-items-right mt-3">
                                     <Button

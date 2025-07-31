@@ -22,7 +22,7 @@ namespace OpenCms.Test.Authentication
             user.Credential.SetPassword("password123");
 
             var repo = Substitute.For<IUserRepository>();
-            repo.GetByEmail(email).Returns(user);
+            repo.GetByEmailWithTenants(email).Returns(user);
 
             var handler = new LoginHandler(repo);
             var result = await handler.Handle(new Login(email, "password123"));
@@ -36,7 +36,7 @@ namespace OpenCms.Test.Authentication
         {
             var email = Email.From("notfound@example.com");
             var repo = Substitute.For<IUserRepository>();
-            repo.GetByEmail(email).Returns((User)null);
+            repo.GetByEmailWithTenants(email).Returns((User)null);
 
             var handler = new LoginHandler(repo);
             var result = await handler.Handle(new Login(email, "password123"));
@@ -58,7 +58,7 @@ namespace OpenCms.Test.Authentication
             user.Credential.SetPassword("correctpassword");
 
             var repo = Substitute.For<IUserRepository>();
-            repo.GetByEmail(email).Returns(user);
+            repo.GetByEmailWithTenants(email).Returns(user);
 
             var handler = new LoginHandler(repo);
             var result = await handler.Handle(new Login(email, "wrongpassword"));

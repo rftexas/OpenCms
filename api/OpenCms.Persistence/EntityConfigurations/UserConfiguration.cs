@@ -53,12 +53,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
             credential.Property(x => x.CreatedAt)
                 .HasColumnName("created_at")
-                .ValueGeneratedOnAdd()
                     .IsRequired();
 
             credential.Property(x => x.UpdatedAt)
                 .HasColumnName("updated_at")
-                .ValueGeneratedOnAddOrUpdate()
                 .IsRequired();
 
             credential.Property(x => x.IsActive)

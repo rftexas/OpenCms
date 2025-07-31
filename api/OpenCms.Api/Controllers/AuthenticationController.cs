@@ -40,6 +40,13 @@ namespace OpenCms.Api.Controllers
                 email = user.Email.Value,
                 firstName = user.FirstName,
                 lastName = user.LastName,
+                primaryRole = user.GetPrimaryRoleName(),
+                tenants = user.UserTenants.Select(ut => new
+                {
+                    tenantId = ut.TenantId.Value,
+                    tenantName = ut.Tenant?.Name ?? "",
+                    roleName = ut.Role?.Name ?? ""
+                }).ToArray(),
                 token = jwtToken
             });
         }
@@ -49,15 +56,26 @@ namespace OpenCms.Api.Controllers
             var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
             var secret = _config["Jwt:Secret"] ?? throw new InvalidOperationException("JWT secret not configured");
             var key = System.Text.Encoding.ASCII.GetBytes(secret);
+
+            var claims = new List<System.Security.Claims.Claim>
+            {
+                new System.Security.Claims.Claim("userId", user.UserId.Value.ToString()),
+                new System.Security.Claims.Claim("email", user.Email.Value),
+                new System.Security.Claims.Claim("firstName", user.FirstName ?? ""),
+                new System.Security.Claims.Claim("lastName", user.LastName ?? ""),
+                new System.Security.Claims.Claim("primaryRole", user.GetPrimaryRoleName())
+            };
+
+            // Add role claims for each tenant
+            foreach (var userTenant in user.UserTenants)
+            {
+                claims.Add(new System.Security.Claims.Claim("role", userTenant.Role?.Name ?? ""));
+                claims.Add(new System.Security.Claims.Claim("tenant", userTenant.TenantId.Value.ToString()));
+            }
+
             var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
             {
-                Subject = new System.Security.Claims.ClaimsIdentity(new[]
-                {
-                    new System.Security.Claims.Claim("userId", user.UserId.Value.ToString()),
-                    new System.Security.Claims.Claim("email", user.Email.Value),
-                    new System.Security.Claims.Claim("firstName", user.FirstName ?? ""),
-                    new System.Security.Claims.Claim("lastName", user.LastName ?? "")
-                }),
+                Subject = new System.Security.Claims.ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddMinutes(30),
                 SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(
                     new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(key),

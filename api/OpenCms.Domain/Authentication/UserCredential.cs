@@ -30,6 +30,8 @@ public class UserCredential
 
         using var pbkdf2 = new Rfc2898DeriveBytes(newPassword, PasswordSalt, Iterations, HashAlgorithmName.SHA256);
         PasswordHash = pbkdf2.GetBytes(HashSize);
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
     }
 
 }

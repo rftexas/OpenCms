@@ -1,0 +1,47 @@
+{
+    "dotnet.defaultSolution": "./api/OpenCms.sln",
+    "omnisharp.defaultLaunchSolution": "./api/OpenCms.sln",
+    "typescript.preferences.includePackageJsonAutoImports": "auto",
+    "npm.packageManager": "npm",
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "files.exclude": {
+        "**/node_modules": true,
+        "**/bin": true,
+        "**/obj": true,
+        "**/.dist": true,
+        "**/.cache": true,
+        "**/playwright-report": true,
+        "**/test-results": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bin": true,
+        "**/obj": true,
+        "**/.dist": true,
+        "**/.cache": true,
+        "**/playwright-report": true,
+        "**/test-results": true
+    },
+    "typescript.suggest.autoImports": true,
+    "javascript.suggest.autoImports": true,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit",
+        "source.organizeImports": "explicit"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-dotnettools.csharp"
+    }
+}

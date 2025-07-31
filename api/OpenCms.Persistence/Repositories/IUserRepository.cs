@@ -7,7 +7,7 @@ namespace OpenCms.Persistence.Repositories;
 public interface IUserRepository : IRepository<UserId, User>
 {
     Task<User?> GetByEmail(Email email);
-
+    Task<User?> GetByEmailWithTenants(Email email);
     Task<User?> GetByPasswordResetToken(PasswordResetToken token);
 }
 
@@ -27,6 +27,17 @@ public class UserRepository(DataContext dataContext) : IUserRepository
         return await dataContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);
     }
 
+    public async Task<User?> GetByEmailWithTenants(Email email)
+    {
+        return await dataContext.Users
+            .Include(u => u.UserTenants)
+            .ThenInclude(ut => ut.Role)
+            .Include(u => u.UserTenants)
+            .ThenInclude(ut => ut.Tenant)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Email == email);
+    }
+
     public async Task<User?> GetById(UserId key)
     {
         return await dataContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserId == key);
@@ -44,6 +55,7 @@ public class UserRepository(DataContext dataContext) : IUserRepository
         if (userEntity.State == EntityState.Detached)
         {
             userEntity.State = EntityState.Modified;
+            dataContext.Entry(entity.Credential).State = EntityState.Modified;
         }
 
         await dataContext.SaveChangesAsync();

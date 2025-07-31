@@ -27,3 +27,20 @@ databaseChangeLog:
               - column:
                   name: last_name
                   type: varchar(50)
+  - changeSet:
+      id: 3
+      author: Ryan Freels
+      changes:
+        - addColumn:
+            tableName: user
+            columns:
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp with time zone
+                  defaultValueComputed: CURRENT_TIMESTAMP
