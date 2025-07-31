@@ -17,6 +17,9 @@ services:
   liquibase:
     image: liquibase/liquibase:alpine
     container_name: liquibase-migration
+    profiles:
+      - setup
+      - migration
     environment:
       LIQUIBASE_COMMAND_URL: jdbc:postgresql://db:5432/opencms
       LIQUIBASE_COMMAND_USERNAME: liquibase
@@ -29,6 +32,7 @@ services:
       db:
         condition: service_healthy
     command: update
+    
   structurizr:
     image: structurizr/lite:latest
     container_name: structurizr
@@ -64,8 +68,8 @@ services:
     ports:
       - 5000:80
     depends_on:
-      liquibase:
-        condition: service_completed_successfully
+      db:
+        condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
