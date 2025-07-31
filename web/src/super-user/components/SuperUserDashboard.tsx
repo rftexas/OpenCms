@@ -132,7 +132,7 @@ export const SuperUserDashboard: React.FC = () => {
             {error && (
                 <Row className="mb-3">
                     <Col>
-                        <Alert variant="danger" dismissible onClose={() => setSuccessMessage('')}>
+                        <Alert variant="danger" dismissible onClose={() => setError(null)}>
                             {error}
                         </Alert>
                     </Col>
