@@ -169,43 +169,71 @@ type ForgotPasswordModalProps = {
 const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ show, onClose }) => {
     const [resetEmail, setResetEmail] = useState("");
 
-    const handleSubmit = (e: React.FormEvent) => {
+
+    const [showError, setShowError] = useState("");
+    const [showSuccess, setShowSuccess] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Add your password reset logic here
-        console.log("Reset email:", resetEmail);
-        onClose();
+        setShowError("");
+        setShowSuccess("");
+        setIsLoading(true);
+        try {
+            const response = await fetch("https://localhost:5001/api/authentication/forgot-password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: resetEmail })
+            });
+            if (response.ok) {
+                setShowSuccess("If your email is registered, a reset link has been sent.");
+                setTimeout(() => { setShowSuccess(""); onClose(); }, 2000);
+            } else {
+                const data = await response.json();
+                setShowError(data.message || "Failed to send reset link.");
+            }
+        } catch (err) {
+            setShowError("Network error. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
-        <Modal show={show} onHide={onClose} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Reset Password</Modal.Title>
-            </Modal.Header>
-            <Form onSubmit={handleSubmit}>
-                <Modal.Body>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Enter your email address</Form.Label>
-                        <Form.Control
-                            type="email"
-                            placeholder="you@company.com"
-                            value={resetEmail}
-                            onChange={(e) => setResetEmail(e.target.value)}
-                            id="resetEmail"
-                        />
-                    </Form.Group>
-                    <div className="text-muted" style={{ fontSize: "0.95em" }}>
-                        We'll send you a link to reset your password.
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={onClose}>
-                        Cancel
-                    </Button>
-                    <Button type="submit" variant="primary">
-                        Send Reset Link
-                    </Button>
-                </Modal.Footer>
-            </Form>
-        </Modal>
+        <>
+            <Modal show={show} onHide={onClose} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Reset Password</Modal.Title>
+                </Modal.Header>
+                <Form onSubmit={handleSubmit}>
+                    <Modal.Body>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Enter your email address</Form.Label>
+                            <Form.Control
+                                type="email"
+                                placeholder="you@company.com"
+                                value={resetEmail}
+                                onChange={(e) => setResetEmail(e.target.value)}
+                                id="resetEmail"
+                                required
+                            />
+                        </Form.Group>
+                        <div className="text-muted" style={{ fontSize: "0.95em" }}>
+                            We'll send you a link to reset your password.
+                        </div>
+                        {showError && <div className="text-danger mt-2">{showError}</div>}
+                        {showSuccess && <div className="text-success mt-2">{showSuccess}</div>}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={onClose} disabled={isLoading}>
+                            Cancel
+                        </Button>
+                        <Button type="submit" variant="primary" disabled={isLoading}>
+                            {isLoading ? "Sending..." : "Send Reset Link"}
+                        </Button>
+                    </Modal.Footer>
+                </Form>
+            </Modal>
+        </>
     );
 };

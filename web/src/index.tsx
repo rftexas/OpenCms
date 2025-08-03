@@ -1,13 +1,14 @@
-import { createRoot } from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { App } from './App';
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { store } from './store/store';
+import { BrowserRouter, Route, Routes } from 'react-router';
+import { App } from './App';
 import { AnonymousLogin } from './authentication/login';
 import ProtectedRoute from './authentication/protected-route';
-import { SuperUserDashboard, SuperUserLayout, SuperUserGuard } from './super-user';
+import ResetPasswordPage from './authentication/reset-password';
 import { SmartDashboard, Unauthorized } from './common/components';
+import { store } from './store/store';
+import { SuperUserDashboard, SuperUserGuard, SuperUserLayout } from './super-user';
 
 let container = document.getElementById("app")!;
 let root = createRoot(container)
@@ -17,6 +18,9 @@ root.render(
       <Routes>
         <Route path="/" element={<ProtectedRoute><App /></ProtectedRoute>} />
         <Route path="/login" element={<AnonymousLogin />} />
+
+        {/* Password Reset Route */}
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
         {/* Smart Dashboard - routes users to appropriate dashboard based on role */}
         <Route path="/dashboard" element={

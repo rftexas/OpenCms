@@ -3,6 +3,7 @@ using OpenCms.Domain;
 using OpenCms.Domain.Authentication;
 using OpenCms.Core.Authentication.Commands;
 using OpenCms.Persistence.Repositories;
+using OpenCms.Core.Notifications;
 
 namespace OpenCms.Tests.Authentication
 {
@@ -23,7 +24,7 @@ namespace OpenCms.Tests.Authentication
             var repo = Substitute.For<IUserRepository>();
             repo.GetById(userId).Returns(user);
 
-            var handler = new UpdatePasswordHandler(repo);
+            var handler = new UpdatePasswordHandler(repo, Substitute.For<ICommandHandler<SendEmail>>());
             await handler.Handle(new UpdatePassword.WithPassword(userId, "newpass", "oldpass"));
 
             Assert.True(user.Credential.ValidatePassword("newpass"));
@@ -44,7 +45,7 @@ namespace OpenCms.Tests.Authentication
             var repo = Substitute.For<IUserRepository>();
             repo.GetById(userId).Returns(user);
 
-            var handler = new UpdatePasswordHandler(repo);
+            var handler = new UpdatePasswordHandler(repo, Substitute.For<ICommandHandler<SendEmail>>());
             await Assert.ThrowsAsync<ArgumentException>(() => handler.Handle(new UpdatePassword.WithPassword(userId, "newpass", "wrongpass")));
         }
 
@@ -71,11 +72,13 @@ namespace OpenCms.Tests.Authentication
             var repo = Substitute.For<IUserRepository>();
             repo.GetByPasswordResetToken(Arg.Any<PasswordResetToken>()).Returns(user);
 
-            var handler = new UpdatePasswordHandler(repo);
+            var sendEmailHandler = Substitute.For<ICommandHandler<SendEmail>>();
+            var handler = new UpdatePasswordHandler(repo, sendEmailHandler);
             await handler.Handle(new UpdatePassword.WithResetToken(tokenStr, "newpass"));
 
             Assert.True(user.Credential.ValidatePassword("newpass"));
             Assert.True(user.PasswordResetTokens.First().Used);
+            await sendEmailHandler.Received(1).Handle(Arg.Any<SendEmail>());
         }
 
         [Fact]
@@ -84,8 +87,9 @@ namespace OpenCms.Tests.Authentication
             var repo = Substitute.For<IUserRepository>();
             repo.GetByPasswordResetToken(Arg.Any<PasswordResetToken>()).Returns((User)null);
 
-            var handler = new UpdatePasswordHandler(repo);
-            await Assert.ThrowsAsync<ArgumentException>(() => handler.Handle(new UpdatePassword.WithResetToken("badtoken", "newpass")));
+            var handler = new UpdatePasswordHandler(repo, Substitute.For<ICommandHandler<SendEmail>>());
+            var result = await handler.Handle(new UpdatePassword.WithResetToken("invalidtoken", "newpass"));
+            Assert.False(result);
         }
     }
 }
