@@ -36,7 +36,7 @@ export const loginUser = createAsyncThunk(
     async ({ email, password, rememberMe = false }: { email: string; password: string; rememberMe?: boolean }, { rejectWithValue }) => {
         try {
             // Try HTTPS first, fallback to HTTP for development
-            let apiUrl = 'https://localhost:7011/api/authentication/login';
+            let apiUrl = 'https://localhost:5001/api/authentication/login';
 
             const response = await fetch(apiUrl, {
                 method: 'POST',

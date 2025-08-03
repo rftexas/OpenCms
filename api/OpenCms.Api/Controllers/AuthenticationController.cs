@@ -105,7 +105,7 @@ namespace OpenCms.Api.Controllers
         }
 
         [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request, [FromServices] ICommandHandler<UpdatePassword.WithResetToken> handler)
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request, [FromServices] ICommandHandler<UpdatePassword.WithResetToken, bool> handler)
         {
             if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Token) || string.IsNullOrEmpty(request.NewPassword))
             {
@@ -114,9 +114,12 @@ namespace OpenCms.Api.Controllers
 
             var command = new UpdatePassword.WithResetToken(request.Token, request.NewPassword);
 
-            await handler.Handle(command);
-
-            return Ok();
+            var result = await handler.Handle(command);
+            if (!result)
+            {
+                return BadRequest(new { message = "Invalid or used reset token." });
+            }
+            return Ok(new { message = "Password reset successfully." });
         }
     }
 

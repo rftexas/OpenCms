@@ -29,8 +29,13 @@ builder.Services.AddControllers()
 builder.Services.Scan(scan => scan.FromAssemblies(typeof(OpenCms.Domain.User).Assembly,
         typeof(IUserRepository).Assembly,
         typeof(OpenCms.Core.Authentication.Commands.Login).Assembly)
-    .AddClasses(c => c.AssignableTo(
-        typeof(OpenCms.Domain.IQueryHandler<,>)))
+    .AddClasses(c => c.AssignableTo(typeof(OpenCms.Domain.IQueryHandler<,>)))
+    .AsImplementedInterfaces()
+    .WithScopedLifetime()
+    .AddClasses(c => c.AssignableTo(typeof(OpenCms.Domain.ICommandHandler<>)))
+    .AsImplementedInterfaces()
+    .WithScopedLifetime()
+    .AddClasses(c => c.AssignableTo(typeof(OpenCms.Domain.ICommandHandler<,>)))
     .AsImplementedInterfaces()
     .WithScopedLifetime()
     .AddClasses(c => c.AssignableTo(typeof(IRepository<,>)))

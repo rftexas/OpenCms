@@ -24,7 +24,7 @@ public class UserRepository(DataContext dataContext) : IUserRepository
 
     public async Task<User?> GetByEmail(Email email)
     {
-        return await dataContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);
+        return await dataContext.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 
     public async Task<User?> GetByEmailWithTenants(Email email)
@@ -34,7 +34,6 @@ public class UserRepository(DataContext dataContext) : IUserRepository
             .ThenInclude(ut => ut.Role)
             .Include(u => u.UserTenants)
             .ThenInclude(ut => ut.Tenant)
-            .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Email == email);
     }
 
