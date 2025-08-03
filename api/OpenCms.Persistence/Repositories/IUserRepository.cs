@@ -30,10 +30,10 @@ public class UserRepository(DataContext dataContext) : IUserRepository
     public async Task<User?> GetByEmailWithTenants(Email email)
     {
         return await dataContext.Users
-            .Include(u => u.UserTenants)
+            .Include(u => u.UserOrganizations)
             .ThenInclude(ut => ut.Role)
-            .Include(u => u.UserTenants)
-            .ThenInclude(ut => ut.Tenant)
+            .Include(u => u.UserOrganizations)
+            .ThenInclude(ut => ut.Organization)
             .FirstOrDefaultAsync(u => u.Email == email);
     }
 

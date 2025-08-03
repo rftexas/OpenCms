@@ -2,28 +2,28 @@ using Vogen;
 
 namespace OpenCms.Domain;
 
-public class Tenant
+public class Organization
 {
-    public TenantId TenantId { get; }
+    public OrganizationId OrganizationId { get; }
     public string Name { get; private set; }
     public string? Description { get; private set; }
 
-    private Tenant(TenantId tenantId, string name, string? description = null)
+    protected Organization(OrganizationId organizationId, string name, string? description = null)
     {
-        TenantId = tenantId;
+        OrganizationId = organizationId;
         Name = name;
         Description = description;
     }
 
     public class Builder
     {
-        private Lazy<TenantId> tenantId = new(() => TenantId.From(Guid.NewGuid()));
+        private Lazy<OrganizationId> organizationId = new(() => OrganizationId.From(Guid.NewGuid()));
         private string name = string.Empty;
         private string? description;
 
-        public Builder WithTenantId(TenantId tenantId)
+        public Builder WithOrganizationId(OrganizationId organizationId)
         {
-            this.tenantId = new(() => tenantId);
+            this.organizationId = new(() => organizationId);
             return this;
         }
 
@@ -39,14 +39,14 @@ public class Tenant
             return this;
         }
 
-        public Tenant Build()
+        public Organization Build()
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new InvalidOperationException("Tenant name is required.");
+                throw new InvalidOperationException("Organization name is required.");
             }
 
-            return new(tenantId.Value, name, description);
+            return new(organizationId.Value, name, description);
         }
     }
 
@@ -54,7 +54,7 @@ public class Tenant
     {
         if (string.IsNullOrEmpty(name))
         {
-            throw new ArgumentException("Tenant name cannot be empty.", nameof(name));
+            throw new ArgumentException("Organization name cannot be empty.", nameof(name));
         }
 
         Name = name;
@@ -67,11 +67,11 @@ public class Tenant
 }
 
 [ValueObject<Guid>(Conversions.SystemTextJson | Conversions.EfCoreValueConverter)]
-public readonly partial record struct TenantId
+public readonly partial record struct OrganizationId
 {
     private static Validation Validate(Guid input)
     {
         bool isValid = input != Guid.Empty;
-        return isValid ? Validation.Ok : Validation.Invalid("TenantId cannot be Empty.");
+        return isValid ? Validation.Ok : Validation.Invalid("OrganizationId cannot be Empty.");
     }
 }

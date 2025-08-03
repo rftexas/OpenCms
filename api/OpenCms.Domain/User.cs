@@ -11,7 +11,7 @@ public class User
     public string? LastName { get; private set; }
     public UserCredential? Credential { get; private set; }
     public HashSet<PasswordResetToken> PasswordResetTokens { get; } = new();
-    public HashSet<UserTenant> UserTenants { get; } = new();
+    public HashSet<UserOrganization> UserOrganizations { get; } = new();
 
     private User(UserId userId, Email email, string firstName, string? lastName)
     {
@@ -97,15 +97,15 @@ public class User
         LastName = lastName;
     }
 
-    // Tenant and Role helper methods
-    public IEnumerable<Tenant> GetTenants()
+    // Organization and Role helper methods
+    public IEnumerable<Organization> GetOrganizations()
     {
-        return UserTenants.Where(ut => ut.Tenant != null).Select(ut => ut.Tenant!);
+        return UserOrganizations.Where(uo => uo.Organization != null).Select(uo => uo.Organization!);
     }
 
     public IEnumerable<Role> GetRoles()
     {
-        return UserTenants.Where(ut => ut.Role != null).Select(ut => ut.Role!).Distinct();
+        return UserOrganizations.Where(uo => uo.Role != null).Select(uo => uo.Role!).Distinct();
     }
 
     public IEnumerable<string> GetRoleNames()
@@ -115,38 +115,39 @@ public class User
 
     public bool HasRole(string roleName)
     {
-        return UserTenants.Any(ut => ut.IsInRole(roleName));
+        return UserOrganizations.Any(uo => uo.IsInRole(roleName));
     }
 
     public bool IsSuperUser()
     {
-        return UserTenants.Any(ut => ut.IsSuperUser());
+        return UserOrganizations.Any(uo => uo.IsSuperUser());
     }
 
     public bool IsAdministrator()
     {
-        return UserTenants.Any(ut => ut.IsAdministrator());
+        return UserOrganizations.Any(uo => uo.IsAdministrator());
     }
 
     public bool IsInvestigator()
     {
-        return UserTenants.Any(ut => ut.IsInvestigator());
+        return UserOrganizations.Any(uo => uo.IsInvestigator());
     }
 
     public bool IsReviewer()
     {
-        return UserTenants.Any(ut => ut.IsReviewer());
+        return UserOrganizations.Any(uo => uo.IsReviewer());
     }
 
-    public bool HasAccessToTenant(TenantId tenantId)
+    public bool HasAccessToOrganization(OrganizationId organizationId)
     {
-        return UserTenants.Any(ut => ut.TenantId == tenantId);
+        return UserOrganizations.Any(uo => uo.OrganizationId == organizationId);
     }
 
-    public Role? GetRoleForTenant(TenantId tenantId)
+    public Role? GetRoleForOrganization(OrganizationId organizationId)
     {
-        return UserTenants.FirstOrDefault(ut => ut.TenantId == tenantId)?.Role;
+        return UserOrganizations.FirstOrDefault(uo => uo.OrganizationId == organizationId)?.Role;
     }
+
 
     public string GetPrimaryRoleName()
     {

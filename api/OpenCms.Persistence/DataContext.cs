@@ -8,9 +8,9 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 {
     public DbSet<User> Users { get; set; }
     public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
-    public DbSet<Tenant> Tenants { get; set; }
+    public DbSet<Organization> Organizations { get; set; }
     public DbSet<Role> Roles { get; set; }
-    public DbSet<UserTenant> UserTenants { get; set; }
+    public DbSet<UserOrganization> UserOrganizations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

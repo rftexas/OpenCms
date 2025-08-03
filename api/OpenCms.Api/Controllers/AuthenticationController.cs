@@ -41,11 +41,11 @@ namespace OpenCms.Api.Controllers
                 firstName = user.FirstName,
                 lastName = user.LastName,
                 primaryRole = user.GetPrimaryRoleName(),
-                tenants = user.UserTenants.Select(ut => new
+                tenants = user.UserOrganizations.Select(uo => new
                 {
-                    tenantId = ut.TenantId.Value,
-                    tenantName = ut.Tenant?.Name ?? "",
-                    roleName = ut.Role?.Name ?? ""
+                    tenantId = uo.OrganizationId.Value,
+                    tenantName = uo.Organization?.Name ?? "",
+                    roleName = uo.Role?.Name ?? ""
                 }).ToArray(),
                 token = jwtToken
             });
@@ -66,11 +66,11 @@ namespace OpenCms.Api.Controllers
                 new System.Security.Claims.Claim("primaryRole", user.GetPrimaryRoleName())
             };
 
-            // Add role claims for each tenant
-            foreach (var userTenant in user.UserTenants)
+            // Add role claims for each organization
+            foreach (var userOrganization in user.UserOrganizations)
             {
-                claims.Add(new System.Security.Claims.Claim("role", userTenant.Role?.Name ?? ""));
-                claims.Add(new System.Security.Claims.Claim("tenant", userTenant.TenantId.Value.ToString()));
+                claims.Add(new System.Security.Claims.Claim("role", userOrganization.Role?.Name ?? ""));
+                claims.Add(new System.Security.Claims.Claim("tenant", userOrganization.OrganizationId.Value.ToString()));
             }
 
             var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor

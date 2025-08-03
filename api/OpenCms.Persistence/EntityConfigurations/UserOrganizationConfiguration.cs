@@ -4,14 +4,14 @@ using OpenCms.Domain;
 
 namespace OpenCms.Persistence.EntityConfigurations;
 
-public class UserTenantConfiguration : IEntityTypeConfiguration<UserTenant>
+public class UserOrganizationConfiguration : IEntityTypeConfiguration<UserOrganization>
 {
-    public void Configure(EntityTypeBuilder<UserTenant> builder)
+    public void Configure(EntityTypeBuilder<UserOrganization> builder)
     {
         builder.ToTable("user_tenant");
 
         // Composite primary key
-        builder.HasKey(ut => new { ut.UserId, ut.TenantId });
+        builder.HasKey(ut => new { ut.UserId, ut.OrganizationId });
 
         builder.Property(ut => ut.UserId)
             .HasColumnName("user_id")
@@ -20,11 +20,11 @@ public class UserTenantConfiguration : IEntityTypeConfiguration<UserTenant>
                 v => UserId.From(v))
             .IsRequired();
 
-        builder.Property(ut => ut.TenantId)
+        builder.Property(ut => ut.OrganizationId)
             .HasColumnName("tenant_id")
             .HasConversion(
                 v => v.Value,
-                v => TenantId.From(v))
+                v => OrganizationId.From(v))
             .IsRequired();
 
         builder.Property(ut => ut.RoleId)
@@ -33,13 +33,13 @@ public class UserTenantConfiguration : IEntityTypeConfiguration<UserTenant>
 
         // Navigation properties
         builder.HasOne(ut => ut.User)
-            .WithMany(u => u.UserTenants)
+            .WithMany(u => u.UserOrganizations)
             .HasForeignKey(ut => ut.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(ut => ut.Tenant)
+        builder.HasOne(ut => ut.Organization)
             .WithMany()
-            .HasForeignKey(ut => ut.TenantId)
+            .HasForeignKey(ut => ut.OrganizationId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(ut => ut.Role)

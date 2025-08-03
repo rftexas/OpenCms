@@ -153,8 +153,8 @@ public class UserRepositoryTests
         var context = CreateInMemoryContext();
         var repo = new UserRepository(context);
         var email = Email.From("test@example.com");
-        var tenant = new Tenant.Builder()
-            .WithTenantId(TenantId.From(Guid.NewGuid()))
+        var tenant = new Organization.Builder()
+            .WithOrganizationId(OrganizationId.From(Guid.NewGuid()))
             .WithName("Tenant1")
             .Build();
         var role = new Role.Builder()
@@ -165,13 +165,13 @@ public class UserRepositoryTests
             .WithEmail(email)
             .WithFirstName("Test")
             .Build();
-        user.UserTenants.Add(new UserTenant.Builder()
+        user.UserOrganizations.Add(new UserOrganization.Builder()
             .WithUserId(user.UserId)
             .WithRole(role)
-            .WithTenantId(tenant.TenantId)
+            .WithOrganizationId(tenant.OrganizationId)
             .Build());
         context.Users.Add(user);
-        context.Tenants.Add(tenant);
+        context.Organizations.Add(tenant);
         context.Roles.Add(role);
         await context.SaveChangesAsync();
 
@@ -181,9 +181,9 @@ public class UserRepositoryTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(email, result.Email);
-        Assert.Single(result.UserTenants);
-        Assert.Equal("Tenant1", result.UserTenants.First().Tenant.Name);
-        Assert.Equal("Admin", result.UserTenants.First().Role.Name);
+        Assert.Single(result.UserOrganizations);
+        Assert.Equal("Tenant1", result.UserOrganizations.First().Organization.Name);
+        Assert.Equal("Admin", result.UserOrganizations.First().Role.Name);
     }
 
     [Fact]

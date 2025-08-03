@@ -1,27 +1,32 @@
 namespace OpenCms.Domain;
 
-public class UserTenant
+public class UserOrganization
 {
     public UserId UserId { get; }
-    public TenantId TenantId { get; }
+    public OrganizationId OrganizationId { get; }
     public short RoleId { get; }
 
     // Navigation properties
     public User? User { get; private set; }
-    public Tenant? Tenant { get; private set; }
+    public Organization? Organization { get; private set; }
     public Role? Role { get; private set; }
 
-    private UserTenant(UserId userId, TenantId tenantId, short roleId)
+    protected UserOrganization(UserId userId, OrganizationId organizationId, short roleId)
     {
         UserId = userId;
-        TenantId = tenantId;
+        OrganizationId = organizationId;
         RoleId = roleId;
+    }
+
+    public static Builder CreateBuilder()
+    {
+        return new Builder();
     }
 
     public class Builder
     {
         private UserId userId;
-        private TenantId tenantId;
+        private OrganizationId organizationId;
         private short roleId;
 
         public Builder WithUserId(UserId userId)
@@ -30,9 +35,9 @@ public class UserTenant
             return this;
         }
 
-        public Builder WithTenantId(TenantId tenantId)
+        public Builder WithOrganizationId(OrganizationId organizationId)
         {
-            this.tenantId = tenantId;
+            this.organizationId = organizationId;
             return this;
         }
 
@@ -48,24 +53,24 @@ public class UserTenant
             return this;
         }
 
-        public UserTenant Build()
+        public UserOrganization Build()
         {
             if (userId.Value == Guid.Empty)
             {
-                throw new InvalidOperationException("UserId is required for UserTenant.");
+                throw new InvalidOperationException("UserId is required for UserOrganization.");
             }
 
-            if (tenantId.Value == Guid.Empty)
+            if (organizationId.Value == Guid.Empty)
             {
-                throw new InvalidOperationException("TenantId is required for UserTenant.");
+                throw new InvalidOperationException("OrganizationId is required for UserOrganization.");
             }
 
             if (roleId <= 0)
             {
-                throw new InvalidOperationException("RoleId is required for UserTenant.");
+                throw new InvalidOperationException("RoleId is required for UserOrganization.");
             }
 
-            return new(userId, tenantId, roleId);
+            return new(userId, organizationId, roleId);
         }
     }
 
