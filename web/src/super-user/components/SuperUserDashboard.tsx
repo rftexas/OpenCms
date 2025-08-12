@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Table, Button, Form, Badge, Modal, Alert, Spinner } from 'react-bootstrap';
-import { Organization, OrganizationFilters, OrganizationFormData } from '../types';
-import { useOrganizations } from '../hooks/useOrganizations';
+import React, { useEffect, useState } from 'react';
+import { Alert, Badge, Button, Card, Col, Container, Modal, Row, Spinner, Table } from 'react-bootstrap';
+import { OrganizationFiltersComponent } from '..';
 import { PaginationComponent } from '../../common/components';
-import { OrganizationModal } from './OrganizationModal';
-import { OrganizationFiltersComponent } from './OrganizationFilters';
+import { useOrganizations } from '../hooks/useOrganizations';
 import '../SuperUser.css';
+import { Organization, OrganizationFilters, OrganizationFormData } from '../types';
+import { OrganizationModal } from './OrganizationModal';
 
 export const SuperUserDashboard: React.FC = () => {
     const {
@@ -98,6 +98,16 @@ export const SuperUserDashboard: React.FC = () => {
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString();
     };
+
+    // Error state setter for dismissible Alert
+    const [localError, setLocalError] = useState<string>('');
+
+
+    // Setter for error state to allow dismissing the error alert
+    function setError(value: string | null): void {
+        // If using localError, update it; otherwise, this can be a no-op or update error state if managed locally
+        setLocalError(value ?? '');
+    }
 
     return (
         <Container fluid className="py-4">

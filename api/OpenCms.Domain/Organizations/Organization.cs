@@ -7,12 +7,20 @@ public class Organization
     public OrganizationId OrganizationId { get; }
     public string Name { get; private set; }
     public string? Description { get; private set; }
+    public bool IsActive { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
 
-    protected Organization(OrganizationId organizationId, string name, string? description = null)
+    // Navigation properties
+    public HashSet<UserOrganization> UserOrganizations { get; } = new();
+
+    protected Organization(OrganizationId organizationId, string name, string? description = null, bool isActive = true)
     {
         OrganizationId = organizationId;
         Name = name;
         Description = description;
+        IsActive = isActive;
+        CreatedAt = DateTime.UtcNow;
     }
 
     public class Builder
@@ -20,6 +28,7 @@ public class Organization
         private Lazy<OrganizationId> organizationId = new(() => OrganizationId.From(Guid.NewGuid()));
         private string name = string.Empty;
         private string? description;
+        private bool isActive = true;
 
         public Builder WithOrganizationId(OrganizationId organizationId)
         {
@@ -39,6 +48,12 @@ public class Organization
             return this;
         }
 
+        public Builder WithIsActive(bool isActive)
+        {
+            this.isActive = isActive;
+            return this;
+        }
+
         public Organization Build()
         {
             if (string.IsNullOrEmpty(name))
@@ -46,7 +61,7 @@ public class Organization
                 throw new InvalidOperationException("Organization name is required.");
             }
 
-            return new(organizationId.Value, name, description);
+            return new(organizationId.Value, name, description, isActive);
         }
     }
 
@@ -58,11 +73,35 @@ public class Organization
         }
 
         Name = name;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void UpdateDescription(string? description)
     {
         Description = description;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Activate()
+    {
+        IsActive = true;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Deactivate()
+    {
+        IsActive = false;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public int GetUserCount()
+    {
+        return UserOrganizations.Count;
+    }
+
+    public int GetActiveUserCount()
+    {
+        return UserOrganizations.Count(uo => uo.User != null);
     }
 }
 

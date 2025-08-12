@@ -1,7 +1,9 @@
+
 using Microsoft.AspNetCore.Mvc;
 using OpenCms.Core.Authentication.Commands;
 using OpenCms.Domain;
 using OpenCms.Domain.Authentication;
+using OpenCms.Core.Dtos;
 
 namespace OpenCms.Api.Controllers
 {
@@ -59,11 +61,11 @@ namespace OpenCms.Api.Controllers
 
             var claims = new List<System.Security.Claims.Claim>
             {
-                new System.Security.Claims.Claim("userId", user.UserId.Value.ToString()),
-                new System.Security.Claims.Claim("email", user.Email.Value),
-                new System.Security.Claims.Claim("firstName", user.FirstName ?? ""),
-                new System.Security.Claims.Claim("lastName", user.LastName ?? ""),
-                new System.Security.Claims.Claim("primaryRole", user.GetPrimaryRoleName())
+                new("userId", user.UserId.Value.ToString()),
+                new("email", user.Email.Value),
+                new("firstName", user.FirstName ?? ""),
+                new("lastName", user.LastName ?? ""),
+                new("primaryRole", user.GetPrimaryRoleName())
             };
 
             // Add role claims for each organization
@@ -123,29 +125,4 @@ namespace OpenCms.Api.Controllers
         }
     }
 
-    // DTOs for requests
-    public class LoginRequest
-    {
-        public string? Email { get; set; }
-        public string? Password { get; set; }
-    }
-
-    public class RegisterRequest
-    {
-        public string? FullName { get; set; }
-        public string? Email { get; set; }
-        public string? Password { get; set; }
-    }
-
-    public class ForgotPasswordRequest
-    {
-        public string? Email { get; set; }
-    }
-
-    public class ResetPasswordRequest
-    {
-        public string? Email { get; set; }
-        public string? Token { get; set; }
-        public string? NewPassword { get; set; }
-    }
 }

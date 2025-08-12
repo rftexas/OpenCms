@@ -11,40 +11,21 @@ public class UserOrganizationConfiguration : IEntityTypeConfiguration<UserOrgani
         builder.ToTable("user_tenant");
 
         // Composite primary key
-        builder.HasKey(ut => new { ut.UserId, ut.OrganizationId });
+        builder.HasKey(ut => new { ut.UserId, ut.OrganizationId, ut.RoleId });
 
         builder.Property(ut => ut.UserId)
             .HasColumnName("user_id")
-            .HasConversion(
-                v => v.Value,
-                v => UserId.From(v))
+            .HasVogenConversion()
             .IsRequired();
 
         builder.Property(ut => ut.OrganizationId)
             .HasColumnName("tenant_id")
-            .HasConversion(
-                v => v.Value,
-                v => OrganizationId.From(v))
+            .HasVogenConversion()
             .IsRequired();
 
         builder.Property(ut => ut.RoleId)
             .HasColumnName("role_id")
             .IsRequired();
 
-        // Navigation properties
-        builder.HasOne(ut => ut.User)
-            .WithMany(u => u.UserOrganizations)
-            .HasForeignKey(ut => ut.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasOne(ut => ut.Organization)
-            .WithMany()
-            .HasForeignKey(ut => ut.OrganizationId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasOne(ut => ut.Role)
-            .WithMany()
-            .HasForeignKey(ut => ut.RoleId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

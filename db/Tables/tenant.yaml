@@ -65,3 +65,17 @@ databaseChangeLog:
                   name: updated_at
                   type: timestamp with time zone
                   defaultValueComputed: CURRENT_TIMESTAMP
+  - changeSet:
+      id: 4
+      author: github-copilot
+      comment: Add organization properties to tenant table
+      changes:
+        - addColumn:
+            tableName: tenant
+            columns:
+              - column:
+                  name: is_active
+                  type: boolean
+                  defaultValue: true
+                  constraints:
+                    nullable: false

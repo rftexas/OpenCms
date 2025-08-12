@@ -50,13 +50,6 @@ public class UserRepository(DataContext dataContext) : IUserRepository
 
     public async Task<User> Update(User entity)
     {
-        var userEntity = dataContext.Entry(entity);
-        if (userEntity.State == EntityState.Detached)
-        {
-            userEntity.State = EntityState.Modified;
-            dataContext.Entry(entity.Credential).State = EntityState.Modified;
-        }
-
         await dataContext.SaveChangesAsync();
 
         return entity;

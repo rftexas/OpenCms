@@ -11,7 +11,7 @@ public class User
     public string? LastName { get; private set; }
     public UserCredential? Credential { get; private set; }
     public HashSet<PasswordResetToken> PasswordResetTokens { get; } = new();
-    public HashSet<UserOrganization> UserOrganizations { get; } = new();
+    public virtual HashSet<UserOrganization> UserOrganizations { get; } = new();
 
     private User(UserId userId, Email email, string firstName, string? lastName)
     {

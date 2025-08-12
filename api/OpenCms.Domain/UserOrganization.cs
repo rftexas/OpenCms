@@ -7,9 +7,9 @@ public class UserOrganization
     public short RoleId { get; }
 
     // Navigation properties
-    public User? User { get; private set; }
-    public Organization? Organization { get; private set; }
-    public Role? Role { get; private set; }
+    public virtual User User { get; private set; }
+    public virtual Organization Organization { get; private set; }
+    public virtual Role Role { get; private set; }
 
     protected UserOrganization(UserId userId, OrganizationId organizationId, short roleId)
     {
@@ -25,8 +25,8 @@ public class UserOrganization
 
     public class Builder
     {
-        private UserId userId;
-        private OrganizationId organizationId;
+        private UserId? userId;
+        private OrganizationId? organizationId;
         private short roleId;
 
         public Builder WithUserId(UserId userId)
@@ -55,12 +55,12 @@ public class UserOrganization
 
         public UserOrganization Build()
         {
-            if (userId.Value == Guid.Empty)
+            if (userId is null)
             {
                 throw new InvalidOperationException("UserId is required for UserOrganization.");
             }
 
-            if (organizationId.Value == Guid.Empty)
+            if (organizationId is null)
             {
                 throw new InvalidOperationException("OrganizationId is required for UserOrganization.");
             }
@@ -70,7 +70,7 @@ public class UserOrganization
                 throw new InvalidOperationException("RoleId is required for UserOrganization.");
             }
 
-            return new(userId, organizationId, roleId);
+            return new(userId.Value, organizationId.Value, roleId);
         }
     }
 

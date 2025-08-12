@@ -7,6 +7,7 @@ import { AnonymousLogin } from './authentication/login';
 import ProtectedRoute from './authentication/protected-route';
 import ResetPasswordPage from './authentication/reset-password';
 import { SmartDashboard, Unauthorized } from './common/components';
+import OrganizationScreen from './organization/OrganizationScreen';
 import { store } from './store/store';
 import { SuperUserDashboard, SuperUserGuard, SuperUserLayout } from './super-user';
 
@@ -80,6 +81,9 @@ root.render(
           <Route path="reviews" element={<ReviewManagement />} />
         </Route>
         */}
+
+        {/* Organization Route */}
+        <Route path="/organizations" element={<ProtectedRoute><OrganizationScreen /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   </Provider>

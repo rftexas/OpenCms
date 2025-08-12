@@ -155,11 +155,11 @@ I can onboard new organizations, configure their settings, and maintain proper m
 
 ### API Endpoints
 
-- `GET /api/tenants` - List accessible organizations
-- `POST /api/tenants` - Create new organization (Super User only)
-- `PUT /api/tenants/{tenantId}` - Update organization details
-- `DELETE /api/tenants/{tenantId}` - Deactivate organization (Super User only)
-- `GET /api/tenants/{tenantId}/users` - List organization users
-- `POST /api/tenants/{tenantId}/users` - Assign user to organization
-- `DELETE /api/tenants/{tenantId}/users/{userId}` - Remove user from organization
-- `GET /api/tenants/{tenantId}/statistics` - Get organization statistics
+- `GET /api/organizations` - List accessible organizations
+- `POST /api/organizations` - Create new organization (Super User only)
+- `PUT /api/organizations/{organizationId}` - Update organization details
+- `DELETE /api/organizations/{organizationId}` - Deactivate organization (Super User only)
+- `GET /api/organizations/{organizationId}/users` - List organization users
+- `POST /api/organizations/{organizationId}/users` - Assign user to organization
+- `DELETE /api/organizations/{organizationId}/users/{userId}` - Remove user from organization
+- `GET /api/organizations/{organizationId}/statistics` - Get organization statistics
